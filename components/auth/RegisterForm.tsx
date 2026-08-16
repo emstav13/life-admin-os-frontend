@@ -113,23 +113,26 @@ export default function RegisterForm() {
     setLoading(true);
 
     const { error } =
-      await supabase.auth.signUp({
-        email,
-        password,
+  await supabase.auth.signUp({
+    email,
+    password,
 
-        options: {
-          data: {
-            full_name: fullName,
+    options: {
+      emailRedirectTo:
+        `${window.location.origin}/verify-email`,
 
-            terms_accepted: true,
+      data: {
+        full_name: fullName,
 
-            privacy_accepted: true,
+        terms_accepted: true,
 
-            accepted_at:
-              new Date().toISOString(),
-          },
-        },
-      });
+        privacy_accepted: true,
+
+        accepted_at:
+          new Date().toISOString(),
+      },
+    },
+  });
 
     setLoading(false);
 
