@@ -15,6 +15,7 @@ export default function UploadForm() {
 
   const [converting, setConverting] = useState(false);
   const conversionInputRef = useRef<HTMLInputElement | null>(null);
+  const uploadInputRef = useRef<HTMLInputElement | null>(null);
 
   const [priority, setPriority] = useState("");
 
@@ -685,7 +686,7 @@ export default function UploadForm() {
       {/* PDF UPLOAD */}
       {/* ========================================== */}
 
-      <label
+      <div
         className="
           group
           mt-6
@@ -867,20 +868,32 @@ export default function UploadForm() {
                 {file.name}
               </p>
 
-              <p
+              <button
+                type="button"
+                onClick={() => uploadInputRef.current?.click()}
+                disabled={uploading}
                 className="
+                  mt-3
+                  inline-flex
+                  items-center
+                  rounded-xl
+                  bg-blue-50
+                  dark:bg-blue-500/10
+                  px-4
+                  py-2
                   text-sm
-
+                  font-semibold
                   text-blue-600
                   dark:text-blue-400
-
-                  mt-3
-
-                  font-medium
+                  hover:bg-blue-100
+                  dark:hover:bg-blue-500/15
+                  transition
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
                 "
               >
                 {t.changePDF}
-              </p>
+              </button>
             </>
 
           ) : (
@@ -911,39 +924,37 @@ export default function UploadForm() {
                 {t.pdfOnly}
               </p>
 
-              <span
+              <button
+                type="button"
+                onClick={() => uploadInputRef.current?.click()}
+                disabled={uploading}
                 className="
                   mt-4
-
                   inline-flex
                   items-center
-
-                  rounded-full
-
-                  border
-                  border-slate-200
-                  dark:border-[#45403B]
-
-                  bg-white
-                  dark:bg-[#34302D]
-
-                  px-3
-                  py-1
-
-                  text-xs
-                  font-medium
-
-                  text-slate-500
-                  dark:text-gray-400
+                  justify-center
+                  rounded-xl
+                  bg-blue-600
+                  px-5
+                  py-2.5
+                  text-sm
+                  font-semibold
+                  text-white
+                  shadow-md
+                  hover:bg-blue-700
+                  transition
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
                 "
               >
-                PDF
-              </span>
+                Choose PDF
+              </button>
             </>
 
           )}
 
           <input
+            ref={uploadInputRef}
             type="file"
             accept=".pdf,application/pdf"
             className="hidden"
@@ -984,7 +995,7 @@ export default function UploadForm() {
 
         </div>
 
-      </label>
+      </div>
 
       {/* ========================================== */}
       {/* PRIORITY */}
