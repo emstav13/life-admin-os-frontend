@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { API_URL } from "@/lib/api";
+import { authFetch } from "@/lib/api-auth";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
 export default function AskAllDocuments() {
@@ -19,8 +20,8 @@ export default function AskAllDocuments() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${API_URL}/ask-all-documents`,
+      const res = await authFetch(
+        "/ask-all-documents",
         {
           method: "POST",
           headers: {
