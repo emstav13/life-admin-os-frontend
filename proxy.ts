@@ -62,16 +62,17 @@ export async function proxy(request: NextRequest) {
    * PUBLIC PAGES
    */
   const isPublicPage =
-    pathname === "/" ||
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/register") ||
-    pathname.startsWith("/forgot-password") ||
-    pathname.startsWith("/verify-email") ||
-    pathname.startsWith("/reset-password") ||
-    pathname.startsWith("/privacy") ||
-    pathname.startsWith("/terms") ||
-    pathname.startsWith("/cookies") ||
-    pathname.startsWith("/support");
+  pathname === "/" ||
+  pathname === "/life-aios-demo.mp4" ||
+  pathname.startsWith("/login") ||
+  pathname.startsWith("/register") ||
+  pathname.startsWith("/forgot-password") ||
+  pathname.startsWith("/verify-email") ||
+  pathname.startsWith("/reset-password") ||
+  pathname.startsWith("/privacy") ||
+  pathname.startsWith("/terms") ||
+  pathname.startsWith("/cookies") ||
+  pathname.startsWith("/support");
 
   /*
    * AUTH PAGES
