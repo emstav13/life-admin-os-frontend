@@ -252,6 +252,88 @@ export default function NotificationCenter() {
   }
 
   // =========================================================
+  // DISPLAY HELPERS
+  // =========================================================
+
+  function getRepeatLabel(repeatType?: string): string | null {
+    switch ((repeatType || "").toLowerCase()) {
+      case "daily":
+        return "Every day";
+      case "weekly":
+        return "Every week";
+      case "monthly":
+        return "Every month";
+      default:
+        return null;
+    }
+  }
+
+  function formatDueDate(
+    dateString: string,
+    timeString?: string | null
+  ): string {
+    try {
+      const dateOnly = dateString.slice(0, 10);
+      const date = new Date(`${dateOnly}T00:00:00`);
+
+      if (Number.isNaN(date.getTime())) {
+        return dateString;
+      }
+
+      const today = new Date();
+      const startToday = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
+      const startTomorrow = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 1
+      );
+      const startDate = new Date(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate()
+      );
+
+      let label: string;
+
+      if (startDate.getTime() === startToday.getTime()) {
+        label = "Today";
+      } else if (startDate.getTime() === startTomorrow.getTime()) {
+        label = "Tomorrow";
+      } else {
+        label = new Intl.DateTimeFormat(undefined, {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }).format(date);
+      }
+
+      return timeString
+        ? `${label} · ${timeString.slice(0, 5)}`
+        : label;
+    } catch {
+      return dateString;
+    }
+  }
+
+  function getDocumentDisplayName(documentName: string): string {
+    const clean = documentName.trim();
+
+    if (!clean) return "Document";
+
+    return (
+      clean
+        .replace(/\.(pdf|docx?|xlsx?|pptx?)$/i, "")
+        .replace(/_+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim() || "Document"
+    );
+  }
+
+  // =========================================================
   // NOTHING TO SHOW
   // =========================================================
 
@@ -259,183 +341,179 @@ export default function NotificationCenter() {
     return null;
   }
 
+  const repeatLabel = getRepeatLabel(
+    visibleReminder.repeat_type
+  );
+
+  const documentDisplayName = getDocumentDisplayName(
+    visibleReminder.document_name
+  );
+
+  const dueLabel = formatDueDate(
+    visibleReminder.due_date,
+    visibleReminder.reminder_time
+  );
+
   // =========================================================
-  // UI
+  // PREMIUM UI
   // =========================================================
 
   return (
     <div
       className="
         fixed
-        top-6
-        right-6
+        right-5
+        top-5
         z-[9999]
-
         w-[420px]
         max-w-[calc(100vw-2rem)]
-
         overflow-hidden
-
-        rounded-2xl
-
+        rounded-[22px]
         border
-        border-gray-200
-        dark:border-[#3D3834]
-
+        border-slate-200
+        dark:border-[#403A35]
         bg-white
-        dark:bg-[#2B2724]
-
-        shadow-2xl
-
+        dark:bg-[#25211F]
+        shadow-[0_24px_70px_rgba(15,23,42,0.18)]
         animate-in
         slide-in-from-right-5
         fade-in
         duration-300
       "
     >
-      {/* TOP ACCENT */}
-
       <div
         className="
-          h-1
-          bg-gradient-to-r
-          from-blue-600
-          to-indigo-600
+          border-b
+          border-slate-200
+          dark:border-[#3A3531]
+          bg-gradient-to-br
+          from-slate-50
+          via-white
+          to-blue-50/70
+          dark:from-[#2A2522]
+          dark:via-[#25211F]
+          dark:to-[#252C38]
+          px-5
+          pb-5
+          pt-5
         "
-      />
-
-      <div className="p-5">
-
-        {/* HEADER */}
-
-        <div
-          className="
-            flex
-            items-start
-            justify-between
-          "
-        >
-          <div
-            className="
-              flex
-              items-center
-              gap-3
-            "
-          >
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-3">
             <div
               className="
                 flex
-                h-10
-                w-10
+                h-11
+                w-11
+                shrink-0
                 items-center
                 justify-center
-
-                rounded-xl
-
-                bg-blue-100
-                dark:bg-blue-950/50
-
+                rounded-2xl
+                bg-blue-600
                 text-xl
+                text-white
+                shadow-lg
               "
             >
               🔔
             </div>
 
-            <div>
+            <div className="min-w-0">
+              <p
+                className="
+                  text-[11px]
+                  font-semibold
+                  uppercase
+                  tracking-[0.18em]
+                  text-blue-600
+                  dark:text-blue-300
+                "
+              >
+                Reminder
+              </p>
+
               <h3
                 className="
+                  mt-0.5
+                  truncate
+                  text-lg
                   font-bold
-                  text-slate-900
+                  tracking-tight
+                  text-slate-950
                   dark:text-white
                 "
               >
-                Life AiOS Reminder
+                Life AiOS
               </h3>
-
-              <p
-                className="
-                  mt-0.5
-                  text-xs
-                  text-gray-500
-                  dark:text-gray-400
-                "
-              >
-                Notification
-              </p>
             </div>
           </div>
-
-          {/* CLOSE */}
 
           <button
             type="button"
             onClick={closeNotification}
             className="
               flex
-              h-8
-              w-8
+              h-9
+              w-9
+              shrink-0
               items-center
               justify-center
-
-              rounded-lg
-
-              text-gray-400
-
-              hover:bg-gray-100
-              hover:text-gray-700
-
-              dark:hover:bg-[#3A3531]
+              rounded-xl
+              text-slate-400
+              hover:bg-slate-100
+              hover:text-slate-700
+              dark:hover:bg-[#35302C]
               dark:hover:text-white
-
               transition
             "
-            aria-label="Close notification"
+            aria-label="Close reminder"
           >
             ×
           </button>
         </div>
 
-        {/* DOCUMENT */}
+        <p
+          className="
+            mt-4
+            text-sm
+            leading-6
+            text-slate-600
+            dark:text-slate-300
+          "
+        >
+          Your reminder is due now.
+        </p>
+      </div>
 
+      <div className="p-5">
         <div
           className="
-            mt-5
-
-            rounded-xl
-
+            rounded-2xl
             border
-            border-gray-200
-            dark:border-[#3D3834]
-
-            bg-gray-50
-            dark:bg-[#34302D]
-
+            border-slate-200
+            dark:border-[#403A35]
+            bg-slate-50
+            dark:bg-[#2E2926]
             p-4
           "
         >
-          <div
-            className="
-              flex
-              items-center
-              gap-3
-            "
-          >
+          <div className="flex items-center gap-3">
             <div
               className="
                 flex
-                h-10
-                w-10
+                h-11
+                w-11
+                shrink-0
                 items-center
                 justify-center
-
-                rounded-lg
-
+                rounded-xl
                 border
-                border-gray-200
-                dark:border-[#45403B]
-
+                border-slate-200
+                dark:border-[#48413B]
                 bg-white
-                dark:bg-[#2B2724]
+                dark:bg-[#25211F]
+                text-lg
+                shadow-sm
               "
             >
               📄
@@ -444,9 +522,12 @@ export default function NotificationCenter() {
             <div className="min-w-0">
               <p
                 className="
-                  text-xs
-                  text-gray-500
-                  dark:text-gray-400
+                  text-[11px]
+                  font-semibold
+                  uppercase
+                  tracking-wide
+                  text-slate-400
+                  dark:text-slate-500
                 "
               >
                 Document
@@ -454,184 +535,168 @@ export default function NotificationCenter() {
 
               <p
                 className="
-                  mt-0.5
+                  mt-1
                   truncate
+                  text-sm
                   font-semibold
                   text-slate-900
                   dark:text-white
                 "
-                title={
-                  visibleReminder.document_name
-                }
+                title={visibleReminder.document_name}
               >
-                {visibleReminder.document_name}
+                {documentDisplayName}
               </p>
             </div>
           </div>
         </div>
 
-        {/* REMINDER CONTENT */}
-
         <div className="mt-5">
+          <p
+            className="
+              text-[11px]
+              font-semibold
+              uppercase
+              tracking-wide
+              text-slate-400
+              dark:text-slate-500
+            "
+          >
+            Reminder
+          </p>
+
           <h4
             className="
+              mt-1.5
+              text-base
               font-semibold
-              text-slate-900
+              leading-6
+              text-slate-950
               dark:text-white
             "
           >
-            {visibleReminder.title}
+            {visibleReminder.title
+              ? visibleReminder.title.replace(
+                  /^Reminder for\s+/i,
+                  ""
+                )
+              : documentDisplayName}
           </h4>
 
-          <p
-            className="
-              mt-2
-              text-sm
-              leading-6
-              text-gray-600
-              dark:text-gray-300
-            "
-          >
-            {visibleReminder.message}
-          </p>
+          {visibleReminder.message &&
+            !/^Reminder for\s+/i.test(
+              visibleReminder.message
+            ) && (
+              <p
+                className="
+                  mt-2
+                  text-sm
+                  leading-6
+                  text-slate-600
+                  dark:text-slate-300
+                "
+              >
+                {visibleReminder.message}
+              </p>
+            )}
         </div>
 
-        {/* DATE / TIME */}
-
-        {visibleReminder.due_date && (
+        <div className="mt-5 flex flex-wrap items-center gap-2">
           <div
             className="
-              mt-4
-
-              flex
-              flex-wrap
+              inline-flex
               items-center
               gap-2
-
-              text-sm
-
-              text-gray-500
-              dark:text-gray-400
+              rounded-xl
+              border
+              border-slate-200
+              dark:border-[#403A35]
+              bg-white
+              dark:bg-[#2B2724]
+              px-3
+              py-2
+              text-xs
+              font-medium
+              text-slate-600
+              dark:text-slate-300
             "
           >
             <span>📅</span>
-
-            <span>
-              {visibleReminder.due_date}
-            </span>
-
-            {visibleReminder.reminder_time && (
-              <>
-                <span>·</span>
-
-                <span>
-                  {visibleReminder.reminder_time}
-                </span>
-              </>
-            )}
+            <span>{dueLabel}</span>
           </div>
-        )}
 
-        {/* REPEAT */}
-
-        {visibleReminder.repeat_type &&
-          visibleReminder.repeat_type !== "none" && (
+          {repeatLabel && (
             <div
               className="
-                mt-3
-
                 inline-flex
                 items-center
                 gap-2
-
-                rounded-full
-
+                rounded-xl
                 border
                 border-blue-100
                 dark:border-blue-900
-
                 bg-blue-50
                 dark:bg-blue-950/40
-
                 px-3
-                py-1
-
+                py-2
                 text-xs
-                font-medium
-
+                font-semibold
                 text-blue-700
                 dark:text-blue-300
               "
             >
               <span>↻</span>
-
-              <span>
-                Repeats:{" "}
-                {visibleReminder.repeat_type}
-              </span>
+              <span>{repeatLabel}</span>
             </div>
           )}
-
-        {/* ACTIONS */}
+        </div>
 
         <div
           className="
             mt-6
-
             flex
             items-center
             justify-end
-            gap-3
+            gap-2
           "
         >
-          {/* DISMISS */}
-
           <button
             type="button"
             onClick={closeNotification}
             className="
               rounded-xl
-
+              border
+              border-slate-200
+              dark:border-[#403A35]
+              bg-white
+              dark:bg-[#2B2724]
               px-4
-              py-2
-
+              py-2.5
               text-sm
-              font-medium
-
-              text-gray-600
-              dark:text-gray-300
-
-              hover:bg-gray-100
-              dark:hover:bg-[#3A3531]
-
+              font-semibold
+              text-slate-600
+              dark:text-slate-200
+              hover:bg-slate-50
+              dark:hover:bg-[#35302C]
               transition
             "
           >
             Dismiss
           </button>
 
-          {/* VIEW DOCUMENT */}
-
           <button
             type="button"
             onClick={viewDocument}
             className="
               rounded-xl
-
               bg-blue-600
-
               px-4
-              py-2
-
+              py-2.5
               text-sm
               font-semibold
-
               text-white
-
-              shadow-sm
-
+              shadow-lg
+              shadow-blue-600/20
               hover:bg-blue-700
-
               transition
             "
           >
