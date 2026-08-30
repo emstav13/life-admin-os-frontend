@@ -15,7 +15,6 @@ export default function UploadForm() {
 
   const [converting, setConverting] = useState(false);
   const conversionInputRef = useRef<HTMLInputElement | null>(null);
-  const uploadInputRef = useRef<HTMLInputElement | null>(null);
 
   const [priority, setPriority] = useState("");
 
@@ -40,14 +39,6 @@ export default function UploadForm() {
     emailNotification,
     setEmailNotification,
   ] = useState(true);
-
-  const [uploadError, setUploadError] = useState<{
-    code: string;
-    message: string;
-    plan: string;
-    used: number;
-    limit: number;
-  } | null>(null);
 
   async function handleConvertFile(
     selectedFile: File | null
@@ -267,7 +258,6 @@ export default function UploadForm() {
     }
 
     try {
-      setUploadError(null);
       setUploading(true);
 
       /*
@@ -399,75 +389,10 @@ export default function UploadForm() {
           errorText
         );
 
-        let errorData: any = null;
-
-        try {
-          errorData = JSON.parse(errorText);
-        } catch {
-          errorData = null;
-        }
-
-        const detail = errorData?.detail;
-        const code =
-          typeof detail?.code === "string"
-            ? detail.code
-            : "";
-
-        const isFreeLimit =
-          code === "FREE_LIMIT_REACHED";
-
-        const isProLimit =
-          code === "PRO_MONTHLY_LIMIT_REACHED" ||
-          code === "PRO_LIMIT_REACHED";
-
-        if (isFreeLimit || isProLimit) {
-          setUploadError({
-            code,
-            message:
-              typeof detail?.message === "string"
-                ? detail.message
-                : isFreeLimit
-                ? "You have reached the 5-document Free plan limit."
-                : "You have reached your monthly Pro document limit.",
-            plan:
-              typeof detail?.plan === "string"
-                ? detail.plan
-                : isFreeLimit
-                ? "free"
-                : "pro",
-            used:
-              typeof detail?.used === "number"
-                ? detail.used
-                : isFreeLimit
-                ? 5
-                : 20,
-            limit:
-              typeof detail?.limit === "number"
-                ? detail.limit
-                : isFreeLimit
-                ? 5
-                : 20,
-          });
-
-          return;
-        }
-
-        toast.error(
-          response.status === 403
-            ? "Upload not available"
-            : "Upload failed",
-          {
-            description:
-              typeof detail?.message === "string"
-                ? detail.message
-                : "We couldn't upload your document. Please try again.",
-          }
+        throw new Error(
+          `Upload failed: ${response.status}`
         );
-
-        return;
       }
-
-      setUploadError(null);
 
       /*
        * ==========================================
@@ -686,7 +611,7 @@ export default function UploadForm() {
       {/* PDF UPLOAD */}
       {/* ========================================== */}
 
-      <div
+      <label
         className="
           group
           mt-6
@@ -868,32 +793,20 @@ export default function UploadForm() {
                 {file.name}
               </p>
 
-              <button
-                type="button"
-                onClick={() => uploadInputRef.current?.click()}
-                disabled={uploading}
+              <p
                 className="
-                  mt-3
-                  inline-flex
-                  items-center
-                  rounded-xl
-                  bg-blue-50
-                  dark:bg-blue-500/10
-                  px-4
-                  py-2
                   text-sm
-                  font-semibold
+
                   text-blue-600
                   dark:text-blue-400
-                  hover:bg-blue-100
-                  dark:hover:bg-blue-500/15
-                  transition
-                  disabled:cursor-not-allowed
-                  disabled:opacity-60
+
+                  mt-3
+
+                  font-medium
                 "
               >
                 {t.changePDF}
-              </button>
+              </p>
             </>
 
           ) : (
@@ -924,37 +837,39 @@ export default function UploadForm() {
                 {t.pdfOnly}
               </p>
 
-              <button
-                type="button"
-                onClick={() => uploadInputRef.current?.click()}
-                disabled={uploading}
+              <span
                 className="
                   mt-4
+
                   inline-flex
                   items-center
-                  justify-center
-                  rounded-xl
-                  bg-blue-600
-                  px-5
-                  py-2.5
-                  text-sm
-                  font-semibold
-                  text-white
-                  shadow-md
-                  hover:bg-blue-700
-                  transition
-                  disabled:cursor-not-allowed
-                  disabled:opacity-60
+
+                  rounded-full
+
+                  border
+                  border-slate-200
+                  dark:border-[#45403B]
+
+                  bg-white
+                  dark:bg-[#34302D]
+
+                  px-3
+                  py-1
+
+                  text-xs
+                  font-medium
+
+                  text-slate-500
+                  dark:text-gray-400
                 "
               >
-                Choose PDF
-              </button>
+                PDF
+              </span>
             </>
 
           )}
 
           <input
-            ref={uploadInputRef}
             type="file"
             accept=".pdf,application/pdf"
             className="hidden"
@@ -985,8 +900,6 @@ export default function UploadForm() {
                 return;
               }
 
-              setUploadError(null);
-
               setFile(
                 selectedFile
               );
@@ -995,7 +908,7 @@ export default function UploadForm() {
 
         </div>
 
-      </div>
+      </label>
 
       {/* ========================================== */}
       {/* PRIORITY */}
@@ -2217,189 +2130,6 @@ export default function UploadForm() {
         </div>
 
       </div>
-
-      {/* ========================================== */}
-      {/* UPLOAD LIMIT / ERROR */}
-      {/* ========================================== */}
-
-      {uploadError && (
-        <div
-          className={`
-            mt-10
-            rounded-2xl
-            border
-            p-5
-            shadow-sm
-            ${
-              uploadError.plan === "free"
-                ? `
-                    border-amber-200
-                    bg-amber-50
-                    dark:border-amber-500/20
-                    dark:bg-amber-500/5
-                  `
-                : `
-                    border-purple-200
-                    bg-purple-50
-                    dark:border-purple-500/20
-                    dark:bg-purple-500/5
-                  `
-            }
-          `}
-        >
-          <div className="flex items-start gap-4">
-            <div
-              className={`
-                flex
-                h-11
-                w-11
-                shrink-0
-                items-center
-                justify-center
-                rounded-xl
-                text-lg
-                ${
-                  uploadError.plan === "free"
-                    ? `
-                        bg-amber-100
-                        text-amber-700
-                        dark:bg-amber-500/10
-                        dark:text-amber-300
-                      `
-                    : `
-                        bg-purple-100
-                        text-purple-700
-                        dark:bg-purple-500/10
-                        dark:text-purple-300
-                      `
-                }
-              `}
-            >
-              {uploadError.plan === "free" ? "!" : "✓"}
-            </div>
-
-            <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3
-                    className="
-                      font-bold
-                      text-slate-900
-                      dark:text-white
-                    "
-                  >
-                    {uploadError.plan === "free"
-                      ? "Free plan limit reached"
-                      : "Monthly Pro limit reached"}
-                  </h3>
-
-                  <p
-                    className="
-                      mt-1.5
-                      text-sm
-                      leading-6
-                      text-slate-600
-                      dark:text-gray-300
-                    "
-                  >
-                    {uploadError.message}
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setUploadError(null)}
-                  className="
-                    shrink-0
-                    rounded-lg
-                    px-2
-                    py-1
-                    text-slate-400
-                    transition
-                    hover:bg-black/5
-                    hover:text-slate-700
-                    dark:hover:bg-white/5
-                    dark:hover:text-white
-                  "
-                  aria-label="Dismiss upload limit message"
-                >
-                  &times;
-                </button>
-              </div>
-
-              <div
-                className="
-                  mt-4
-                  flex
-                  flex-col
-                  gap-3
-                  sm:flex-row
-                  sm:items-center
-                  sm:justify-between
-                "
-              >
-                <p
-                  className="
-                    text-sm
-                    font-medium
-                    text-slate-700
-                    dark:text-gray-200
-                  "
-                >
-                  {uploadError.used} / {uploadError.limit} documents used
-                </p>
-
-                {uploadError.plan === "free" ? (
-                  <a
-                    href="/settings#plan"
-                    className="
-                      inline-flex
-                      items-center
-                      justify-center
-                      rounded-xl
-                      bg-gradient-to-r
-                      from-blue-600
-                      to-indigo-600
-                      px-4
-                      py-2.5
-                      text-sm
-                      font-semibold
-                      text-white
-                      shadow-md
-                      transition
-                      hover:-translate-y-0.5
-                      hover:shadow-lg
-                    "
-                  >
-                     Upgrade to Pro
-                  </a>
-                ) : (
-                  <span
-                    className="
-                      inline-flex
-                      items-center
-                      rounded-xl
-                      border
-                      border-purple-200
-                      bg-white/70
-                      px-4
-                      py-2.5
-                      text-sm
-                      font-semibold
-                      text-purple-700
-                      dark:border-purple-500/20
-                      dark:bg-[#302C29]
-                      dark:text-purple-300
-                    "
-                  >
-                    Resets with your next billing period
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ========================================== */}
       {/* ANALYZE / UPLOAD BUTTON */}

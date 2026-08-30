@@ -10,10 +10,7 @@ interface PublicLayoutProps {
   children: ReactNode;
 }
 
-export default function PublicLayout({
-  children,
-}: PublicLayoutProps) {
-
+export default function PublicLayout({ children }: PublicLayoutProps) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -48,207 +45,259 @@ export default function PublicLayout({
         duration-300
       "
     >
-      <div className="max-w-6xl mx-auto min-h-screen flex flex-col">
+      {loading ? null : loggedIn && <AppHeader />}
 
-        {loading ? null : loggedIn ? (
+      <div
+        className={`
+          min-h-screen
+          flex
+          flex-col
 
-          <AppHeader />
-
-        ) : (
-
-          <header className="flex items-center justify-between py-6 px-6">
-
-            <Link
-              href="/"
-              className="text-3xl font-bold dark:text-white"
-            >
-              Life AiOS
-            </Link>
-
-            <nav className="flex items-center gap-3">
-
-              <Link
-                href="/login"
-                className="
-                  text-gray-700
-                  dark:text-white
-
-                  hover:text-blue-600
-
-                  transition
-                "
-              >
-                Login
+          ${loggedIn ? "lg:pl-[250px]" : ""}
+        `}
+      >
+        <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col">
+          {loading ? null : loggedIn ? null : (
+            <header className="flex items-center justify-between py-6 px-6">
+              <Link href="/" className="text-3xl font-bold dark:text-white">
+                Life AiOS
               </Link>
 
-              <Link
-                href="/register"
-                className="
-                  rounded-xl
+              <nav className="flex items-center gap-3">
+                <Link
+                  href="/login"
+                  className="
+                    text-gray-700
+                    dark:text-white
 
-                  bg-blue-600
+                    hover:text-blue-600
 
-                  px-4
-                  py-2
+                    transition
+                  "
+                >
+                  Login
+                </Link>
 
-                  text-white
+                <Link
+                  href="/register"
+                  className="
+                    rounded-xl
 
-                  hover:bg-blue-700
+                    bg-blue-600
 
-                  transition
-                "
-              >
-                Create Account
-              </Link>
+                    px-4
+                    py-2
 
-            </nav>
+                    text-white
 
-          </header>
+                    hover:bg-blue-700
 
-        )}
+                    transition
+                  "
+                >
+                  Create Account
+                </Link>
+              </nav>
+            </header>
+          )}
 
-        <div className="flex-1 px-6 py-10">
+          <div className="flex-1 px-6 py-10">{children}</div>
 
-          {children}
+          <footer className="mt-12 pb-3 px-6">
+            <div
+              className="
+              border-t
+              border-slate-200
 
-        </div>
-                <footer className="px-6 pb-8">
-
-          <div
-            className="
-              rounded-2xl
-
-              bg-white
-              dark:bg-[#2B2724]
-
-              border
-              border-gray-200
-              dark:border-[#3D3834]
-
-              shadow-md
-
-              p-6
+              px-2
+              py-8
 
               text-center
+
+              dark:border-[#3D3834]
             "
-          >
+            >
+              {/* BRAND */}
 
-            <h3 className="text-xl font-bold dark:text-white">
-              Life AOS
-            </h3>
-
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              AI-powered document management platform.
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-3 mt-5">
-
-              <Link
-                href="/privacy"
+              <p
                 className="
-                  px-3
-                  py-1
+                text-lg
+                font-bold
+                tracking-tight
+                text-slate-900
+
+                dark:text-white
+              "
+              >
+                Life AiOS
+              </p>
+
+              <p
+                className="
+                mt-1.5
+                text-sm
+                text-slate-500
+
+                dark:text-slate-400
+              "
+              >
+                AI-powered administration workspace
+              </p>
+
+              {/* LINKS */}
+
+              <nav
+                className="
+                mt-5
+                flex
+                flex-wrap
+                items-center
+                justify-center
+                gap-2
+              "
+              >
+                <Link
+                  href="/privacy"
+                  className="
                   rounded-full
+                  border
+                  border-slate-200
+                  bg-white
 
-                  bg-gray-100
-                  dark:bg-[#3A3531]
+                  px-3.5
+                  py-1.5
 
-                  text-gray-700
-                  dark:text-gray-200
-
-                  hover:bg-blue-100
-                  hover:text-blue-600
+                  text-xs
+                  font-medium
+                  text-slate-600
 
                   transition
-                  text-sm
-                "
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                href="/terms"
-                className="
-                  px-3
-                  py-1
-                  rounded-full
-
-                  bg-gray-100
-                  dark:bg-[#3A3531]
-
-                  text-gray-700
-                  dark:text-gray-200
-
-                  hover:bg-blue-100
+                  hover:border-blue-200
+                  hover:bg-blue-50
                   hover:text-blue-600
 
-                  transition
-                  text-sm
+                  dark:border-[#3D3834]
+                  dark:bg-[#2A2622]
+                  dark:text-slate-300
+                  dark:hover:border-blue-900/50
+                  dark:hover:bg-blue-950/30
+                  dark:hover:text-blue-300
                 "
-              >
-                Terms of Service
-              </Link>
+                >
+                  Privacy Policy
+                </Link>
 
-              <Link
-                href="/cookies"
-                className="
-                  px-3
-                  py-1
+                <Link
+                  href="/terms"
+                  className="
                   rounded-full
+                  border
+                  border-slate-200
+                  bg-white
 
-                  bg-gray-100
-                  dark:bg-[#3A3531]
+                  px-3.5
+                  py-1.5
 
-                  text-gray-700
-                  dark:text-gray-200
+                  text-xs
+                  font-medium
+                  text-slate-600
 
-                  hover:bg-blue-100
+                  transition
+                  hover:border-blue-200
+                  hover:bg-blue-50
                   hover:text-blue-600
 
-                  transition
-                  text-sm
+                  dark:border-[#3D3834]
+                  dark:bg-[#2A2622]
+                  dark:text-slate-300
+                  dark:hover:border-blue-900/50
+                  dark:hover:bg-blue-950/30
+                  dark:hover:text-blue-300
                 "
-              >
-                Cookie Policy
-              </Link>
+                >
+                  Terms of Service
+                </Link>
 
-              <Link
-                href="/support"
-                className="
-                  px-3
-                  py-1
+                <Link
+                  href="/cookies"
+                  className="
                   rounded-full
+                  border
+                  border-slate-200
+                  bg-white
 
-                  bg-gray-100
-                  dark:bg-[#3A3531]
+                  px-3.5
+                  py-1.5
 
-                  text-gray-700
-                  dark:text-gray-200
+                  text-xs
+                  font-medium
+                  text-slate-600
 
-                  hover:bg-blue-100
+                  transition
+                  hover:border-blue-200
+                  hover:bg-blue-50
                   hover:text-blue-600
 
-                  transition
-                  text-sm
+                  dark:border-[#3D3834]
+                  dark:bg-[#2A2622]
+                  dark:text-slate-300
+                  dark:hover:border-blue-900/50
+                  dark:hover:bg-blue-950/30
+                  dark:hover:text-blue-300
                 "
-              >
-                Support
-              </Link>
+                >
+                  Cookie Policy
+                </Link>
 
+                <Link
+                  href="/support"
+                  className="
+                  rounded-full
+                  border
+                  border-slate-200
+                  bg-white
+
+                  px-3.5
+                  py-1.5
+
+                  text-xs
+                  font-medium
+                  text-slate-600
+
+                  transition
+                  hover:border-blue-200
+                  hover:bg-blue-50
+                  hover:text-blue-600
+
+                  dark:border-[#3D3834]
+                  dark:bg-[#2A2622]
+                  dark:text-slate-300
+                  dark:hover:border-blue-900/50
+                  dark:hover:bg-blue-950/30
+                  dark:hover:text-blue-300
+                "
+                >
+                  Support
+                </Link>
+              </nav>
+
+              {/* META */}
+
+              <p
+                className="
+                mt-6
+                text-[11px]
+                text-slate-400
+
+                dark:text-slate-500
+              "
+              >
+                © 2026 Life AiOS <span className="mx-1.5">•</span> Version 1.0.0
+              </p>
             </div>
-
-            <div className="w-20 h-px bg-gray-300 dark:bg-[#45403B] mx-auto my-5" />
-
-            <p className="text-xs text-gray-400 dark:text-gray-500">
-              © 2026 Life AiOS • Version 1.0.0
-            </p>
-
-          </div>
-
-        </footer>
-
+          </footer>
+        </div>
       </div>
-
     </main>
   );
 }

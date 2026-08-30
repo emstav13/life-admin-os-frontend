@@ -6,6 +6,7 @@ import Link from "next/link";
 import AuthGuard from "@/components/AuthGuard";
 import AppHeader from "./AppHeader";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
+import LogoutButton from "@/components/ui/LogoutButton";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -30,210 +31,345 @@ export default function AppLayout({
 
         transition-colors
         duration-300
-
-        px-4
-        py-6
-        md:px-8
-        lg:px-10
       "
     >
       <AuthGuard />
 
-      {/* ==========================================
-          GLOBAL NOTIFICATIONS
-          ========================================== */}
-
       <NotificationCenter />
 
-      <div className="max-w-6xl mx-auto min-h-screen flex flex-col">
+      {/* =====================================================
+          SIDEBAR
+          ===================================================== */}
 
-        <AppHeader />
+      <AppHeader />
 
-        <div className="flex-1">
-          {children}
-        </div>
+      {/* =====================================================
+          MAIN AREA
+          ===================================================== */}
 
-        {/* ==========================================
-            FOOTER
-            ========================================== */}
+      <div
+        className="
+          min-h-screen
+          lg:pl-[250px]
+        "
+      >
+        <div
+          className="
+            mx-auto
+            flex
+            min-h-screen
+            w-full
+            max-w-[1600px]
+            flex-col
 
-        <footer className="mt-10 pb-4">
+            px-4
+            py-5
+
+            sm:px-6
+            sm:py-6
+
+            lg:px-8
+            lg:py-7
+
+            xl:px-10
+          "
+        >
+          {/* =================================================
+              TOP BAR
+              ================================================= */}
 
           <div
             className="
-              bg-white
-              dark:bg-[#2B2724]
-
-              border
-              border-gray-200
-              dark:border-[#3D3834]
-
-              rounded-2xl
-              shadow-md
-
-              px-8
-              py-5
-
-              text-center
-
-              transition-colors
-              duration-300
+              mb-7
+              flex
+              items-center
+              justify-between
+              gap-4
             "
           >
+            {/* MOBILE BRAND */}
 
-            <h3
+            <Link
+              href="/"
               className="
-                text-xl
-                font-bold
-                text-slate-800
-                dark:text-white
+                flex
+                items-center
+                gap-3
+                lg:hidden
               "
             >
-              Life AiOS
-            </h3>
+              <div
+                className="
+                  flex
+                  h-10
+                  w-10
+                  items-center
+                  justify-center
+                  rounded-xl
+                  bg-blue-600
+                  text-lg
+                  font-bold
+                  text-white
+                  shadow-lg
+                  shadow-blue-600/20
+                "
+              >
+                L
+              </div>
 
-            <p
-              className="
-                text-sm
-                text-gray-500
-                dark:text-gray-400
-                mt-1
-              "
-            >
-              AI-powered document management platform.
-            </p>
+              <div>
+                <div
+                  className="
+                    text-lg
+                    font-bold
+                    tracking-tight
+                    text-slate-950
+                    dark:text-white
+                  "
+                >
+                  Life AiOS
+                </div>
+
+                <div
+                  className="
+                    text-[10px]
+                    font-semibold
+                    uppercase
+                    tracking-[0.14em]
+                    text-slate-400
+                    dark:text-slate-500
+                  "
+                >
+                  AI Workspace
+                </div>
+              </div>
+            </Link>
+
+            {/* DESKTOP SPACER */}
+
+            <div className="hidden flex-1 lg:block" />
+
+            {/* LOGOUT */}
 
             <div
               className="
                 flex
-                justify-center
-                flex-wrap
-                gap-3
-                mt-4
+                shrink-0
+                items-center
               "
             >
-
-              <Link
-                href="/privacy"
-                className="
-                  px-3
-                  py-1
-                  rounded-full
-
-                  bg-gray-100
-                  dark:bg-[#3A3531]
-
-                  text-gray-700
-                  dark:text-gray-200
-
-                  hover:bg-blue-100
-                  hover:text-blue-600
-
-                  transition
-                  text-sm
-                "
-              >
-                Privacy Policy
-              </Link>
-
-              <Link
-                href="/terms"
-                className="
-                  px-3
-                  py-1
-                  rounded-full
-
-                  bg-gray-100
-                  dark:bg-[#3A3531]
-
-                  text-gray-700
-                  dark:text-gray-200
-
-                  hover:bg-blue-100
-                  hover:text-blue-600
-
-                  transition
-                  text-sm
-                "
-              >
-                Terms of Service
-              </Link>
-
-              <Link
-                href="/cookies"
-                className="
-                  px-3
-                  py-1
-                  rounded-full
-
-                  bg-gray-100
-                  dark:bg-[#3A3531]
-
-                  text-gray-700
-                  dark:text-gray-200
-
-                  hover:bg-blue-100
-                  hover:text-blue-600
-
-                  transition
-                  text-sm
-                "
-              >
-                Cookie Policy
-              </Link>
-
-              <Link
-                href="/support"
-                className="
-                  px-3
-                  py-1
-                  rounded-full
-
-                  bg-gray-100
-                  dark:bg-[#3A3531]
-
-                  text-gray-700
-                  dark:text-gray-200
-
-                  hover:bg-blue-100
-                  hover:text-blue-600
-
-                  transition
-                  text-sm
-                "
-              >
-                Support
-              </Link>
-
+              <LogoutButton />
             </div>
-
-            <div
-              className="
-                w-20
-                h-px
-                bg-gray-300
-                dark:bg-[#45403B]
-                mx-auto
-                my-4
-              "
-            />
-
-            <p
-              className="
-                text-xs
-                text-gray-400
-                dark:text-gray-500
-              "
-            >
-              © 2026 Life AiOS • Version 1.0.0
-            </p>
-
           </div>
 
-        </footer>
+          {/* =================================================
+              PAGE CONTENT
+              ================================================= */}
 
+          <div className="flex-1">
+            {children}
+          </div>
+
+          {/* =================================================
+              PREMIUM FOOTER
+              ================================================= */}
+
+          <footer className="mt-20 pb-6">
+            <div
+              className="
+                border-t
+                border-slate-200
+
+                px-2
+                pt-10
+                pb-2
+
+                text-center
+
+                dark:border-[#3D3834]
+              "
+            >
+              {/* BRAND */}
+
+              <p
+                className="
+                  text-lg
+                  font-bold
+                  tracking-tight
+                  text-slate-900
+
+                  dark:text-white
+                "
+              >
+                Life AiOS
+              </p>
+
+              <p
+                className="
+                  mt-1.5
+                  text-sm
+                  text-slate-500
+
+                  dark:text-slate-400
+                "
+              >
+                AI-powered administration workspace
+              </p>
+
+              {/* LINKS */}
+
+              <nav
+                className="
+                  mt-5
+                  flex
+                  flex-wrap
+                  items-center
+                  justify-center
+                  gap-2
+                "
+              >
+                <Link
+                  href="/privacy"
+                  className="
+                    rounded-full
+                    border
+                    border-slate-200
+                    bg-white
+
+                    px-3.5
+                    py-1.5
+
+                    text-xs
+                    font-medium
+                    text-slate-600
+
+                    transition
+                    hover:border-blue-200
+                    hover:bg-blue-50
+                    hover:text-blue-600
+
+                    dark:border-[#3D3834]
+                    dark:bg-[#2A2622]
+                    dark:text-slate-300
+                    dark:hover:border-blue-900/50
+                    dark:hover:bg-blue-950/30
+                    dark:hover:text-blue-300
+                  "
+                >
+                  Privacy Policy
+                </Link>
+
+                <Link
+                  href="/terms"
+                  className="
+                    rounded-full
+                    border
+                    border-slate-200
+                    bg-white
+
+                    px-3.5
+                    py-1.5
+
+                    text-xs
+                    font-medium
+                    text-slate-600
+
+                    transition
+                    hover:border-blue-200
+                    hover:bg-blue-50
+                    hover:text-blue-600
+
+                    dark:border-[#3D3834]
+                    dark:bg-[#2A2622]
+                    dark:text-slate-300
+                    dark:hover:border-blue-900/50
+                    dark:hover:bg-blue-950/30
+                    dark:hover:text-blue-300
+                  "
+                >
+                  Terms of Service
+                </Link>
+
+                <Link
+                  href="/cookies"
+                  className="
+                    rounded-full
+                    border
+                    border-slate-200
+                    bg-white
+
+                    px-3.5
+                    py-1.5
+
+                    text-xs
+                    font-medium
+                    text-slate-600
+
+                    transition
+                    hover:border-blue-200
+                    hover:bg-blue-50
+                    hover:text-blue-600
+
+                    dark:border-[#3D3834]
+                    dark:bg-[#2A2622]
+                    dark:text-slate-300
+                    dark:hover:border-blue-900/50
+                    dark:hover:bg-blue-950/30
+                    dark:hover:text-blue-300
+                  "
+                >
+                  Cookie Policy
+                </Link>
+
+                <Link
+                  href="/support"
+                  className="
+                    rounded-full
+                    border
+                    border-slate-200
+                    bg-white
+
+                    px-3.5
+                    py-1.5
+
+                    text-xs
+                    font-medium
+                    text-slate-600
+
+                    transition
+                    hover:border-blue-200
+                    hover:bg-blue-50
+                    hover:text-blue-600
+
+                    dark:border-[#3D3834]
+                    dark:bg-[#2A2622]
+                    dark:text-slate-300
+                    dark:hover:border-blue-900/50
+                    dark:hover:bg-blue-950/30
+                    dark:hover:text-blue-300
+                  "
+                >
+                  Support
+                </Link>
+              </nav>
+
+              {/* META */}
+
+              <p
+                className="
+                  mt-6
+                  text-[11px]
+                  text-slate-400
+
+                  dark:text-slate-500
+                "
+              >
+                © 2026 Life AiOS <span className="mx-1.5">•</span> Version 1.0.0
+              </p>
+            </div>
+          </footer>
+        </div>
       </div>
-
     </main>
   );
 }
