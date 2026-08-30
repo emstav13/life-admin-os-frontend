@@ -174,7 +174,7 @@ export default function AppLayout({
               PREMIUM FOOTER
               ================================================= */}
 
-          <footer className="mt-20 pb-6">
+          <footer className="mt-30 pb-2">
             <div
               className="
                 border-t
