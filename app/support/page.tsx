@@ -236,10 +236,10 @@ export default function SupportPage() {
               <p className="mt-3 text-gray-700 dark:text-gray-300">
                 📧{" "}
                 <a
-                  href="mailto:support@lifeaios.com"
+                  href="mailto:support@lifeaios.online"
                   className="text-blue-600 font-semibold hover:underline"
                 >
-                  support@lifeaios.com
+                  support@lifeaios.online
                 </a>
               </p>
 

@@ -228,7 +228,7 @@ export default function CookiesPage() {
               processes information, please contact our support team through
               the{" "}
               <a
-                href="mailto:support@lifeaios.com"
+                href="mailto:support@lifeaios.online"
                 className="text-blue-600 font-semibold hover:underline"
               >
                 Life AiOS Support Center

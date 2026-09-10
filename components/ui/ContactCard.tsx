@@ -41,7 +41,7 @@ export default function ContactCard() {
         </div>
 
         <a
-          href="mailto:support@lifeaios.com"
+          href="mailto:support@lifeaios.online"
           className="
             px-6
             py-3
