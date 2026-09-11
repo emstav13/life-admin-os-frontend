@@ -453,7 +453,7 @@ export default function SubscriptionCard() {
               dark:hover:bg-gray-100
             "
             onClick={() => {
-              window.location.href = "/settings#plan";
+              window.location.href = "/settings#pricing";
             }}
           >
             {isPaid
