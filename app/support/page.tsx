@@ -156,18 +156,23 @@ export default function SupportPage() {
                 </h3>
 
                 <p className="mt-3 text-gray-700 dark:text-gray-300 leading-7">
-                  Life AiOS currently supports a Free plan and a Pro
-                  subscription.
+                  Life AiOS currently supports Free, Pro and Pro Plus
+                  subscription plans.
                 </p>
-
                 <ul className="mt-3 list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300">
                   <li>
-                    <strong>Free:</strong> up to 5 document uploads.
+                    <strong>Free:</strong> €0, up to 5 document uploads during
+                    the lifetime of the account.
                   </li>
 
                   <li>
-                    <strong>Pro:</strong> up to 20 document uploads per
-                    subscription period.
+                    <strong>Pro:</strong> €10/month, up to 20 document uploads
+                    per subscription period.
+                  </li>
+
+                  <li>
+                    <strong>Pro Plus:</strong> €19.99/month, up to 50 document
+                    uploads per subscription period.
                   </li>
                 </ul>
 
@@ -190,7 +195,7 @@ export default function SupportPage() {
                 </p>
 
                 <p className="mt-3 text-gray-700 dark:text-gray-300 leading-7">
-                  For the Pro plan, the allowance is calculated according to
+                  For paid plans, the allowance is calculated according to
                   the active subscription period.
                 </p>
               </div>

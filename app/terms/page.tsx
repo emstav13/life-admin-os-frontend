@@ -149,41 +149,60 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4 leading-8 text-gray-700 dark:text-gray-300">
-              Life AiOS currently provides Free and Pro subscription plans.
+              Life AiOS currently provides Free, Pro and Pro Plus subscription plans.
               Available plans and limits may be displayed within the service.
             </p>
+              <div className="mt-6 space-y-4">
 
-            <div className="mt-6 space-y-4">
+                <div className="rounded-2xl border border-gray-200 dark:border-[#3D3834] p-6">
+                  <h3 className="font-semibold dark:text-white">
+                    Free Plan
+                  </h3>
 
-              <div className="rounded-2xl border border-gray-200 dark:border-[#3D3834] p-6">
-                <h3 className="font-semibold dark:text-white">
-                  Free Plan
-                </h3>
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    The Free Plan is available at no charge and allows up to 5
+                    document uploads during the lifetime of the account, subject
+                    to the applicable service rules.
+                  </p>
 
-                <p className="mt-2 text-gray-700 dark:text-gray-300">
-                  The Free Plan allows up to 5 document uploads during the
-                  lifetime of the account, subject to the applicable service
-                  rules.
-                </p>
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    Price: €0.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-gray-200 dark:border-[#3D3834] p-6">
+                  <h3 className="font-semibold dark:text-white">
+                    Pro Plan
+                  </h3>
+
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    The Pro Plan allows up to 20 document uploads during each
+                    active subscription period.
+                  </p>
+
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    The current Pro subscription price is €10 per month unless a
+                    different price is clearly displayed before purchase.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl border border-violet-200 dark:border-violet-400/20 p-6">
+                  <h3 className="font-semibold dark:text-white">
+                    Pro Plus Plan
+                  </h3>
+
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    The Pro Plus Plan allows up to 50 document uploads during
+                    each active subscription period.
+                  </p>
+
+                  <p className="mt-2 text-gray-700 dark:text-gray-300">
+                    The current Pro Plus subscription price is €19.99 per month
+                    unless a different price is clearly displayed before purchase.
+                  </p>
+                </div>
+
               </div>
-
-              <div className="rounded-2xl border border-gray-200 dark:border-[#3D3834] p-6">
-                <h3 className="font-semibold dark:text-white">
-                  Pro Plan
-                </h3>
-
-                <p className="mt-2 text-gray-700 dark:text-gray-300">
-                  The Pro Plan allows up to 20 document uploads during each
-                  active subscription period.
-                </p>
-
-                <p className="mt-2 text-gray-700 dark:text-gray-300">
-                  The current Pro subscription price is €10 per month unless a
-                  different price is clearly displayed before purchase.
-                </p>
-              </div>
-
-            </div>
 
             <p className="mt-6 leading-8 text-gray-700 dark:text-gray-300">
               Document allowances are enforced by the Life AiOS backend and
@@ -205,13 +224,13 @@ export default function TermsPage() {
             </p>
 
             <p className="mt-4 leading-8 text-gray-700 dark:text-gray-300">
-              By purchasing a Pro subscription, you authorize the applicable
-              subscription charges according to the price and billing
+              By purchasing a paid subscription, you authorize the applicable
+              subscription charges according to the price, plan and billing
               frequency presented at checkout.
             </p>
 
             <p className="mt-4 leading-8 text-gray-700 dark:text-gray-300">
-              Subscription status and access to Pro features may be affected by
+              Subscription status and access to paid-plan features may be affected by
               failed, declined or otherwise unsuccessful payments.
             </p>
           </section>
@@ -224,7 +243,7 @@ export default function TermsPage() {
             </h2>
 
             <p className="mt-4 leading-8 text-gray-700 dark:text-gray-300">
-              You may cancel your Pro subscription through the subscription
+              You may cancel your paid subscription through the subscription
               management functionality provided by Life AiOS or through the
               payment provider where applicable.
             </p>
