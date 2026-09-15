@@ -1,6 +1,10 @@
 "use client";
 
-import { Check, Sparkles } from "lucide-react";
+import { Check, Loader2, Sparkles } from "lucide-react";
+import { useState } from "react";
+
+import { authFetch } from "@/lib/api-auth";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 type PricingPlansProps = {
   currentPlan?: string;
@@ -59,6 +63,60 @@ const plans: Plan[] = [
 ];
 
 export default function PricingPlans({ currentPlan }: PricingPlansProps) {
+  const { t } = useLanguage();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  async function startCheckout(plan: Plan["id"]) {
+    if (plan === "free") {
+      return;
+    }
+
+    try {
+      setLoadingPlan(plan);
+      setError("");
+
+      const response = await authFetch(
+        "/subscription/checkout",
+        {
+          method: "POST",
+          body: JSON.stringify({ plan }),
+        }
+      );
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          typeof data?.detail === "string"
+            ? data.detail
+            : "Unable to start checkout."
+        );
+      }
+
+      if (!data?.url) {
+        throw new Error(
+          "Stripe did not return a checkout URL."
+        );
+      }
+
+      window.location.href = data.url;
+    } catch (checkoutError) {
+      console.error(
+        "Checkout error:",
+        checkoutError
+      );
+
+      setError(
+        checkoutError instanceof Error
+          ? checkoutError.message
+          : "Unable to start checkout."
+      );
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
+
   return (
     <section
       id="pricing"
@@ -70,9 +128,11 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
               Pricing
             </p>
+
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Choose the plan that fits you
             </h2>
+
             <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
               Start free and upgrade when you need more monthly document capacity.
             </p>
@@ -90,6 +150,7 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
           const isCurrent = currentPlan === plan.id;
           const isPro = plan.id === "pro";
           const isProPlus = plan.id === "pro_plus";
+          const isLoading = loadingPlan === plan.id;
 
           return (
             <article
@@ -112,16 +173,19 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
                 <p className="text-sm font-semibold text-gray-500 dark:text-gray-400">
                   {plan.name}
                 </p>
+
                 <div className="mt-2 flex items-end gap-1.5">
                   <span className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                     {plan.price}
                   </span>
+
                   {plan.cadence && (
                     <span className="pb-1 text-sm text-gray-500 dark:text-gray-400">
                       {plan.cadence}
                     </span>
                   )}
                 </div>
+
                 <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-300">
                   {plan.description}
                 </p>
@@ -133,6 +197,7 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/80 dark:bg-white/5">
                       <Check className="h-3.5 w-3.5" />
                     </span>
+
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       {feature}
                     </span>
@@ -152,17 +217,41 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
                 ) : (
                   <button
                     type="button"
-                    disabled
-                    className="flex h-11 w-full cursor-not-allowed items-center justify-center rounded-xl bg-slate-900/70 text-sm font-semibold text-white dark:bg-white/70 dark:text-slate-900"
-                    title="Stripe checkout will be connected next"
+                    onClick={() => startCheckout(plan.id)}
+                    disabled={loadingPlan !== null}
+                    className={`flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
+                      isProPlus
+                        ? "bg-violet-600 hover:bg-violet-700"
+                        : "bg-indigo-600 hover:bg-indigo-700"
+                    }`}
                   >
-                    Available soon
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Redirecting...
+                      </>
+                    ) : (
+                      <>
+                        Upgrade to {plan.name}
+                        <span className="ml-2">→</span>
+                      </>
+                    )}
                   </button>
                 )}
               </div>
             </article>
           );
         })}
+      </div>
+
+      {error && (
+        <div className="border-t border-red-100 bg-red-50 px-7 py-4 text-sm text-red-700 dark:border-red-900/30 dark:bg-red-950/20 dark:text-red-300">
+          {error}
+        </div>
+      )}
+
+      <div className="border-t border-gray-100 px-7 py-4 text-xs text-gray-500 dark:border-[#3D3834] dark:text-gray-400">
+        {t.manageSubscription}
       </div>
     </section>
   );
