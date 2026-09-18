@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import AccountCard from "./AccountCard";
 import AppearanceCard from "./AppearanceCard";
 import LanguageCard from "./LanguageCard";
@@ -9,7 +11,48 @@ import PricingPlans from "./PricingPlans";
 import DangerZoneCard from "./DangerZoneCard";
 import ContactCard from "./ContactCard";
 
+import { authFetch } from "@/lib/api-auth";
+
+type SubscriptionData = {
+  plan: "free" | "pro" | "pro_plus" | string;
+};
+
 export default function SettingsPage() {
+  const [currentPlan, setCurrentPlan] =
+    useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadSubscription() {
+      try {
+        const response = await authFetch("/subscription");
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data: SubscriptionData =
+          await response.json();
+
+        if (mounted) {
+          setCurrentPlan(data.plan);
+        }
+      } catch (error) {
+        console.error(
+          "Settings subscription error:",
+          error
+        );
+      }
+    }
+
+    loadSubscription();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   return (
     <div className="w-full">
       <div className="mb-10">
@@ -78,7 +121,8 @@ export default function SettingsPage() {
               Pricing
             </p>
           </div>
-          <PricingPlans />
+
+          <PricingPlans currentPlan={currentPlan} />
         </section>
 
         <section>
