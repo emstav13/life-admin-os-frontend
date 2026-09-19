@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { supabase } from "@/lib/supabase";
+import { API_URL } from "@/lib/api";
 
 const PUBLIC_ROUTES = [
   "/",
@@ -56,16 +57,8 @@ export default function AuthGuard() {
           return;
         }
 
-        const backendUrl =
-          process.env.NEXT_PUBLIC_API_URL ||
-          process.env.NEXT_PUBLIC_BACKEND_URL;
-
-        if (!backendUrl) {
-          return;
-        }
-
         const subscriptionResponse = await fetch(
-          `${backendUrl}/subscription`,
+          `${API_URL}/subscription`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
