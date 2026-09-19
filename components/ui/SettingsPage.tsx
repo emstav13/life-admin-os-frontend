@@ -61,9 +61,6 @@ export default function SettingsPage() {
   return (
     <main className="settings-page mx-auto w-full max-w-none pb-24">
       <header className="mb-10 pb-1">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
-          Account
-        </p>
         <div className="mt-2">
           <div>
             <h1 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950 dark:text-white">
