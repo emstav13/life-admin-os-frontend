@@ -45,19 +45,23 @@ export default function NotificationCard() {
 
   return (
     <div className="rounded-2xl border border-gray-200/80 bg-white p-8 shadow-sm transition-all hover:border-[#4A4540] dark:border-[#3D3834] dark:bg-[#2B2724]">
-      <div className="mb-8">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400 ring-1 ring-blue-500/10">
-            <Bell className="h-4 w-4" />
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+      <div className="border-b border-gray-100 px-7 py-6 dark:border-[#3D3834]">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
+            Life AiOS
+          </p>
+
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             {t.notificationsTitle}
           </h2>
+
+          <p className="mt-1 max-w-xl text-sm text-gray-500 dark:text-gray-400">
+            {t.manageNotifications}
+          </p>
         </div>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">{t.manageNotifications}</p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 p-8">
         <div className="flex items-center justify-between gap-6 rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 dark:border-[#403B37] dark:bg-[#24211F]">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
