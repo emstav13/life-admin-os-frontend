@@ -5,7 +5,7 @@ import {
   Language,
 } from "@/components/providers/LanguageProvider";
 
-export default function LanguageCard() {
+export default function LanguageCard({ embedded = false }: { embedded?: boolean }) {
   const { language, setLanguage } = useLanguage();
 
   function changeLanguage(lang: Language) {
@@ -26,23 +26,7 @@ export default function LanguageCard() {
   ];
 
   return (
-    <div
-      className="
-        bg-white
-        dark:bg-[#2B2724]
-
-        border
-        border-gray-200
-        dark:border-[#3D3834]
-
-        rounded-2xl
-        shadow-lg
-
-        p-6
-
-        transition-colors
-      "
-    >
+    <div className={embedded ? "p-0" : "rounded-2xl border border-gray-200 bg-white p-6 shadow-lg transition-colors dark:border-[#3D3834] dark:bg-[#2B2724]"}>
       <div className="mb-4">
 
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -55,41 +39,14 @@ export default function LanguageCard() {
 
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-
+      <div className="flex w-full max-w-xl items-center rounded-xl border border-gray-200 bg-gray-100/70 p-1 dark:border-[#403B37] dark:bg-[#211F1D]">
         {languages.map((lang) => (
-
-          <button
-            key={lang.code}
-            type="button"
-            onClick={() => changeLanguage(lang.code)}
-            className={`rounded-xl border-2 p-4 text-left transition-all ${
-              language === lang.code
-                ? "border-blue-600 bg-blue-50 dark:bg-[#34302D]"
-                : "border-gray-200 dark:border-[#3D3834] bg-white dark:bg-[#34302D] hover:border-blue-400"
-            }`}
-          >
-
-            <div className="text-2xl">
-              {lang.flag}
-            </div>
-
-            <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">
-              {lang.name}
-            </h3>
-
-            {language === lang.code && (
-              <div className="mt-2 inline-flex rounded-full bg-blue-600 text-white px-2 py-0.5 text-[10px] font-medium">
-                ✓ Selected
-              </div>
-            )}
-
+          <button key={lang.code} type="button" onClick={() => changeLanguage(lang.code)}
+            className={`flex h-11 flex-1 items-center justify-center gap-2 rounded-lg text-sm font-semibold transition-all duration-200 ${language === lang.code ? "bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900" : "text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"}`}>
+            <span>{lang.flag}</span><span>{lang.name}</span>
           </button>
-
         ))}
-
       </div>
-
     </div>
   );
 }
