@@ -4,7 +4,7 @@ import { Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
-export default function AppearanceCard() {
+export default function AppearanceCard({ embedded = false }: { embedded?: boolean }) {
   const { theme, setTheme } = useTheme();
   const { t } = useLanguage();
 
@@ -12,7 +12,7 @@ export default function AppearanceCard() {
     "bg-slate-900 text-white shadow-sm dark:bg-white dark:text-slate-900";
 
   return (
-    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-colors dark:border-[#3D3834] dark:bg-[#2B2724]">
+    <div className={embedded ? "p-0" : "rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-colors dark:border-[#3D3834] dark:bg-[#2B2724]"}>
       <div className="mb-5">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
