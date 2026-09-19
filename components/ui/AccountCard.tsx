@@ -71,18 +71,24 @@ export default function AccountCard() {
         hover:border-[#4A4540]
       "
     >
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          👤 {t.account ?? "Account"}
-        </h2>
+      <div className="border-b border-gray-100 px-7 py-6 dark:border-[#3D3834]">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
+            Life AiOS
+          </p>
 
-        <p className="text-gray-500 dark:text-gray-400 mt-2">
-          {t.manageAccount ??
-            "Manage your personal account information."}
-        </p>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            {t.account ?? "Account"}
+          </h2>
+
+          <p className="mt-1 max-w-xl text-sm text-gray-500 dark:text-gray-400">
+            {t.manageAccount ??
+              "Manage your personal account information."}
+          </p>
+        </div>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-8 p-8">
 
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
