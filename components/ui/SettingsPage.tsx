@@ -90,7 +90,7 @@ export default function SettingsPage() {
           title="Profile"
           description="Your personal account information and password."
         >
-          <div className="settings-card"><AccountCard /></div>
+          <AccountCard />
         </Section>
 
         <Section
@@ -98,9 +98,9 @@ export default function SettingsPage() {
           title="Preferences"
           description="Customize the appearance, language and notifications of Life AiOS."
         >
-          <div className="settings-card"><AppearanceCard /></div>
-          <div className="settings-card"><LanguageCard /></div>
-          <div className="settings-card"><NotificationCard /></div>
+          <AppearanceCard />
+          <LanguageCard />
+          <NotificationCard />
         </Section>
 
         <Section
@@ -108,8 +108,8 @@ export default function SettingsPage() {
           title="Subscription & Billing"
           description="Review your current plan, document usage and subscription."
         >
-          <div className="settings-card"><SubscriptionCard /></div>
-          <div className="settings-card"><PricingPlans currentPlan={currentPlan} /></div>
+          <SubscriptionCard />
+          <PricingPlans currentPlan={currentPlan} />
         </Section>
 
         <Section
@@ -117,7 +117,7 @@ export default function SettingsPage() {
           title="Support"
           description="Get help with your account or contact the Life AiOS team."
         >
-          <div className="settings-card"><ContactCard /></div>
+          <ContactCard />
         </Section>
 
         <Section
@@ -125,8 +125,7 @@ export default function SettingsPage() {
           title="Security & Data"
           description="Manage sensitive account actions and your stored data."
         >
-          <div className="settings-card"><DangerZoneCard /></div>
+          <DangerZoneCard />
         </Section>
-      </div>
-    <style jsx global>{`\n      .settings-page .settings-card > div {\n        width: 100% !important;\n        border-radius: 16px !important;\n        border-color: #3D3834 !important;\n        box-shadow: none !important;\n      }\n      .settings-page .settings-card > div:hover {\n        box-shadow: none !important;\n      }\n    `}</style>\n    </main>\n  );
+      </div>\n    </main>\n  );
 }
