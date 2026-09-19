@@ -41,6 +41,18 @@ export default function SubscriptionCard() {
   const [error, setError] =
     useState(false);
 
+  const [manageOpen, setManageOpen] =
+    useState(false);
+
+  const [manageLoading, setManageLoading] =
+    useState(false);
+
+  const [manageError, setManageError] =
+    useState("");
+
+  const [cancelAtPeriodEnd, setCancelAtPeriodEnd] =
+    useState(false);
+
   useEffect(() => {
     let mounted = true;
 
@@ -191,6 +203,92 @@ export default function SubscriptionCard() {
     formatDate(
       subscription?.current_period_end ?? null
     );
+
+  async function cancelPlan() {
+    const confirmed = window.confirm(
+      "Cancel your subscription at the end of the current billing period? You will keep access until the paid period ends."
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setManageLoading(true);
+      setManageError("");
+
+      const response = await authFetch("/subscription/cancel", {
+        method: "POST",
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          typeof data?.detail === "string"
+            ? data.detail
+            : "Unable to cancel your subscription."
+        );
+      }
+
+      setCancelAtPeriodEnd(true);
+      setSubscription((previous) =>
+        previous
+          ? {
+              ...previous,
+              status: data?.status ?? previous.status,
+              current_period_end:
+                data?.current_period_end ?? previous.current_period_end,
+            }
+          : previous
+      );
+    } catch (error) {
+      setManageError(
+        error instanceof Error
+          ? error.message
+          : "Unable to cancel your subscription."
+      );
+    } finally {
+      setManageLoading(false);
+    }
+  }
+
+  async function reactivatePlan() {
+    try {
+      setManageLoading(true);
+      setManageError("");
+
+      const response = await authFetch("/subscription/reactivate", {
+        method: "POST",
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          typeof data?.detail === "string"
+            ? data.detail
+            : "Unable to reactivate your subscription."
+        );
+      }
+
+      setCancelAtPeriodEnd(false);
+      setSubscription((previous) =>
+        previous
+          ? {
+              ...previous,
+              status: data?.status ?? previous.status,
+              current_period_end:
+                data?.current_period_end ?? previous.current_period_end,
+            }
+          : previous
+      );
+    } catch (error) {
+      setManageError(
+        error instanceof Error
+          ? error.message
+          : "Unable to reactivate your subscription."
+      );
+    } finally {
+      setManageLoading(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -416,51 +514,91 @@ export default function SubscriptionCard() {
         </div>
 
         {/* FOOTER ROW */}
-        <div className="mt-6 flex flex-col gap-5 rounded-2xl border border-gray-200 bg-gray-50/70 p-5 dark:border-[#3D3834] dark:bg-[#302C29] sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold text-slate-900 dark:text-white">
-              {isPaid
-                ? "Your subscription is active."
-                : "You are currently on the Free plan."}
-            </p>
+        <div className="mt-6 rounded-2xl border border-gray-200 bg-gray-50/70 p-5 dark:border-[#3D3834] dark:bg-[#302C29]">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                {isPaid
+                  ? cancelAtPeriodEnd
+                    ? "Your subscription is scheduled to cancel."
+                    : "Your subscription is active."
+                  : "You are currently on the Free plan."}
+              </p>
+              <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+                {isPaid && periodEnd
+                  ? cancelAtPeriodEnd
+                    ? `You keep access until ${periodEnd}.`
+                    : `Current billing period ends ${periodEnd}.`
+                  : "Upgrade to unlock more monthly document capacity."}
+              </p>
+            </div>
 
-            <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
-              {isPaid && periodEnd
-                ? `Current billing period ends ${periodEnd}.`
-                : "Upgrade to unlock more monthly document capacity."}
-            </p>
+            {isPaid ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setManageOpen((open) => !open);
+                  setManageError("");
+                }}
+                className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-gray-100"
+              >
+                Manage plan
+                <span className="ml-2">{manageOpen ? "↑" : "→"}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = "/settings#pricing";
+                }}
+                className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-gray-100"
+              >
+                View plans
+                <span className="ml-2">→</span>
+              </button>
+            )}
           </div>
 
-          <button
-            type="button"
-            className="
-              inline-flex
-              items-center
-              justify-center
-              rounded-xl
-              bg-slate-900
-              px-5
-              py-3
-              text-sm
-              font-semibold
-              text-white
-              shadow-sm
-              transition
-              hover:-translate-y-0.5
-              hover:bg-slate-800
-              dark:bg-white
-              dark:text-slate-900
-              dark:hover:bg-gray-100
-            "
-            onClick={() => {
-              window.location.href = "/settings#pricing";
-            }}
-          >
-            {isPaid
-              ? "Manage plan"
-              : "View plans"}
-            <span className="ml-2">→</span>
-          </button>
+          {manageOpen && isPaid && (
+            <div className="mt-5 rounded-2xl border border-gray-200 bg-white p-5 dark:border-[#3D3834] dark:bg-[#26221F]">
+              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                Subscription management
+              </p>
+              <p className="mt-2 text-sm leading-6 text-gray-500 dark:text-gray-400">
+                {cancelAtPeriodEnd && periodEnd
+                  ? `Your subscription remains active until ${periodEnd}. No new renewal charge will be made unless you reactivate it.`
+                  : "If you cancel, your current paid access remains active until the end of your billing period."}
+              </p>
+
+              {manageError && (
+                <p className="mt-3 text-sm text-red-600 dark:text-red-400">
+                  {manageError}
+                </p>
+              )}
+
+              <div className="mt-4">
+                {cancelAtPeriodEnd ? (
+                  <button
+                    type="button"
+                    onClick={reactivatePlan}
+                    disabled={manageLoading}
+                    className="inline-flex items-center justify-center rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-indigo-400/20 dark:bg-indigo-500/10 dark:text-indigo-300"
+                  >
+                    {manageLoading ? "Updating..." : "Keep my subscription"}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={cancelPlan}
+                    disabled={manageLoading}
+                    className="inline-flex items-center justify-center rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-400/20 dark:bg-red-500/10 dark:text-red-300"
+                  >
+                    {manageLoading ? "Cancelling..." : "Cancel at period end"}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
