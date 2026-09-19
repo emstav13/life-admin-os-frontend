@@ -76,6 +76,32 @@ export default function SubscriptionCard() {
 
         if (mounted) {
           setSubscription(data);
+
+          if (data?.plan === "pro" || data?.plan === "pro_plus") {
+            try {
+              const manageResponse = await authFetch(
+                "/subscription/manage"
+              );
+
+              if (manageResponse.ok) {
+                const manageData =
+                  await manageResponse.json();
+
+                if (mounted) {
+                  setCancelAtPeriodEnd(
+                    Boolean(
+                      manageData?.cancel_at_period_end
+                    )
+                  );
+                }
+              }
+            } catch (manageError) {
+              console.error(
+                "Subscription management state error:",
+                manageError
+              );
+            }
+          }
         }
       } catch (error) {
         console.error(
