@@ -59,15 +59,16 @@ export default function AccountCard() {
         dark:bg-[#2B2724]
 
         border
-        border-gray-200
+        border-gray-200/80
         dark:border-[#3D3834]
 
         rounded-2xl
-        shadow-lg
+        shadow-sm
 
         p-8
 
-        transition-colors
+        transition-all
+        hover:border-[#4A4540]
       "
     >
       <div className="mb-8">
@@ -94,10 +95,12 @@ export default function AccountCard() {
               items-center
               gap-2
 
-              rounded-full
+              rounded-xl
+              border border-gray-200
+              dark:border-[#403B37]
 
               px-4
-              py-2
+              py-2.5
 
               font-semibold
 
@@ -127,10 +130,12 @@ export default function AccountCard() {
               items-center
               gap-2
 
-              rounded-full
+              rounded-xl
+              border border-gray-200
+              dark:border-[#403B37]
 
               px-4
-              py-2
+              py-2.5
 
               font-medium
 
@@ -179,7 +184,9 @@ export default function AccountCard() {
               text-white
               font-semibold
 
-              hover:opacity-90
+              hover:-translate-y-0.5
+              hover:shadow-lg
+              hover:shadow-blue-500/15
 
               transition
             "
