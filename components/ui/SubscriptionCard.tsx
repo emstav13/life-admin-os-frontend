@@ -232,7 +232,7 @@ export default function SubscriptionCard() {
 
   async function cancelPlan() {
     const confirmed = window.confirm(
-      "Cancel your subscription at the end of the current billing period? You will keep access until the paid period ends."
+      "Schedule cancellation at the end of the current billing period? Your paid access will remain active until the period ends."
     );
 
     if (!confirmed) return;
@@ -546,15 +546,15 @@ export default function SubscriptionCard() {
               <p className="text-sm font-semibold text-slate-900 dark:text-white">
                 {isPaid
                   ? cancelAtPeriodEnd
-                    ? "Your subscription is scheduled to cancel."
+                    ? "Cancellation is scheduled."
                     : "Your subscription is active."
                   : "You are currently on the Free plan."}
               </p>
               <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
                 {isPaid && periodEnd
                   ? cancelAtPeriodEnd
-                    ? `You keep access until ${periodEnd}.`
-                    : `Current billing period ends ${periodEnd}.`
+                    ? `Paid access remains available until ${periodEnd}.`
+                    : `Current billing period ends on ${periodEnd}.`
                   : "Upgrade to unlock more monthly document capacity."}
               </p>
             </div>
@@ -568,8 +568,8 @@ export default function SubscriptionCard() {
                 }}
                 className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-gray-100"
               >
-                Manage plan
-                <span className="ml-2">{manageOpen ? "↑" : "→"}</span>
+                Manage subscription
+                <span className="ml-2">{manageOpen ? "−" : "→"}</span>
               </button>
             ) : (
               <button
@@ -588,12 +588,12 @@ export default function SubscriptionCard() {
           {manageOpen && isPaid && (
             <div className="mt-5 rounded-2xl border border-gray-200 bg-white p-5 dark:border-[#3D3834] dark:bg-[#26221F]">
               <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                Subscription management
+                Manage subscription
               </p>
               <p className="mt-2 text-sm leading-6 text-gray-500 dark:text-gray-400">
                 {cancelAtPeriodEnd && periodEnd
-                  ? `Your subscription remains active until ${periodEnd}. No new renewal charge will be made unless you reactivate it.`
-                  : "If you cancel, your current paid access remains active until the end of your billing period."}
+                  ? `Your subscription remains active until ${periodEnd}. No renewal will be processed after the scheduled cancellation.`
+                  : "Cancellation takes effect at the end of the current paid billing period. Your access remains active until then."}
               </p>
 
               {manageError && (
@@ -610,7 +610,7 @@ export default function SubscriptionCard() {
                     disabled={manageLoading}
                     className="inline-flex items-center justify-center rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-semibold text-indigo-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-indigo-400/20 dark:bg-indigo-500/10 dark:text-indigo-300"
                   >
-                    {manageLoading ? "Updating..." : "Keep my subscription"}
+                    {manageLoading ? "Updating..." : "Keep subscription active"}
                   </button>
                 ) : (
                   <button
@@ -619,7 +619,7 @@ export default function SubscriptionCard() {
                     disabled={manageLoading}
                     className="inline-flex items-center justify-center rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-400/20 dark:bg-red-500/10 dark:text-red-300"
                   >
-                    {manageLoading ? "Cancelling..." : "Cancel at period end"}
+                    {manageLoading ? "Cancelling..." : "Cancel at billing period end"}
                   </button>
                 )}
               </div>
