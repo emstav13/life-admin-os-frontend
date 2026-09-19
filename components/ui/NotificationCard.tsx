@@ -44,7 +44,7 @@ export default function NotificationCard() {
   );
 
   return (
-    <div className="rounded-2xl border border-gray-200/80 bg-white p-8 shadow-sm transition-all hover:border-[#4A4540] dark:border-[#3D3834] dark:bg-[#2B2724]">
+    <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)] dark:border-[#3D3834] dark:bg-[#2B2724]">
       <div className="border-b border-gray-100 px-7 py-6 dark:border-[#3D3834]">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
@@ -61,7 +61,7 @@ export default function NotificationCard() {
         </div>
       </div>
 
-      <div className="space-y-3 p-8">
+      <div className="space-y-3 p-7">
         <div className="flex items-center justify-between gap-6 rounded-xl border border-gray-200 bg-gray-50/50 px-5 py-4 dark:border-[#403B37] dark:bg-[#24211F]">
           <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
