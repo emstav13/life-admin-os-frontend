@@ -55,20 +55,13 @@ export default function AccountCard() {
   return (
     <div
       className="
+        overflow-hidden
+        rounded-3xl
+        border border-gray-200
         bg-white
-        dark:bg-[#2B2724]
-
-        border
-        border-gray-200/80
+        shadow-[0_18px_60px_rgba(15,23,42,0.08)]
         dark:border-[#3D3834]
-
-        rounded-2xl
-        shadow-sm
-
-        p-8
-
-        transition-all
-        hover:border-[#4A4540]
+        dark:bg-[#2B2724]
       "
     >
       <div className="border-b border-gray-100 px-7 py-6 dark:border-[#3D3834]">
@@ -88,10 +81,10 @@ export default function AccountCard() {
         </div>
       </div>
 
-      <div className="space-y-8 p-8">
+      <div className="space-y-8 p-7">
 
         <div>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+          <p className="mb-2 text-xs font-medium text-gray-500 dark:text-gray-400">
             {t.name ?? "Name"}
           </p>
 
@@ -168,7 +161,7 @@ export default function AccountCard() {
               {t.password ?? "Password"}
             </p>
 
-            <p className="font-semibold mt-1 text-slate-900 dark:text-white">
+            <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-white">
               {t.securedWithSupabase ??
                 "Secured with Supabase Auth"}
             </p>
@@ -178,7 +171,7 @@ export default function AccountCard() {
           <button
             onClick={changePassword}
             className="
-              px-6
+              px-5
               py-3
 
               rounded-xl
