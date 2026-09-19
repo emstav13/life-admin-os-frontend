@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import AuthGuard from "@/components/AuthGuard";
 import AppHeader from "./AppHeader";
@@ -15,6 +16,9 @@ interface AppLayoutProps {
 export default function AppLayout({
   children,
 }: AppLayoutProps) {
+  const pathname = usePathname();
+  const isSettingsPage = pathname === "/settings";
+
   return (
     <main
       className="
@@ -174,7 +178,7 @@ export default function AppLayout({
               PREMIUM FOOTER
               ================================================= */}
 
-          <footer className="mt-30 pb-2">
+          <footer className={`${isSettingsPage ? "mt-8" : "mt-30"} pb-2`}>
             <div
               className="
                 border-t
