@@ -63,10 +63,10 @@ export default function SettingsPage() {
       <header className="mb-10 pb-1">
         <div className="mt-2">
           <div>
-            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950 dark:text-white">
+            <h1 className="text-[40px] leading-[1.1] font-semibold tracking-[-0.03em] text-slate-950 dark:text-white">
               Settings
             </h1>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+            <p className="mt-2 text-[18px] leading-7 text-gray-500 dark:text-gray-400">
               Manage your account, preferences, subscription and security.
             </p>
           </div>
