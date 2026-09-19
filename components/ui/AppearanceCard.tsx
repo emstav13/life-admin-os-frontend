@@ -13,19 +13,20 @@ export default function AppearanceCard({ embedded = false }: { embedded?: boolea
 
   return (
     <div className={embedded ? "p-0" : "rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-colors dark:border-[#3D3834] dark:bg-[#2B2724]"}>
-      <div className="mb-5">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
-            <Palette className="h-4 w-4" />
+      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
+              <Palette className="h-4 w-4" />
+            </div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+              {t.appearanceTitle}
+            </h2>
           </div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-            {t.appearanceTitle}
-          </h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t.chooseTheme}</p>
         </div>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t.chooseTheme}</p>
-      </div>
 
-      <div className="flex w-full max-w-xl items-center rounded-xl border border-gray-200 bg-gray-100/70 p-1 dark:border-[#403B37] dark:bg-[#211F1D]">
+        <div className="flex w-full max-w-[430px] shrink-0 items-center rounded-xl border border-gray-200 bg-gray-100/70 p-1 dark:border-[#403B37] dark:bg-[#211F1D]">
         <button
           type="button"
           onClick={() => setTheme("light")}
@@ -43,6 +44,7 @@ export default function AppearanceCard({ embedded = false }: { embedded?: boolea
           <Moon className="h-4 w-4" />
           <span>{t.dark}</span>
         </button>
+      </div>
       </div>
     </div>
   );
