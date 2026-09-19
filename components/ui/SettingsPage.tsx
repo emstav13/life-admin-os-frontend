@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import AccountCard from "./AccountCard";
 import AppearanceCard from "./AppearanceCard";
 import LanguageCard from "./LanguageCard";
@@ -10,155 +9,124 @@ import SubscriptionCard from "./SubscriptionCard";
 import PricingPlans from "./PricingPlans";
 import DangerZoneCard from "./DangerZoneCard";
 import ContactCard from "./ContactCard";
-
 import { authFetch } from "@/lib/api-auth";
 
-type SubscriptionData = {
-  plan: "free" | "pro" | "pro_plus" | string;
-};
+type SubscriptionData = { plan: "free" | "pro" | "pro_plus" | string };
 
-function SectionHeader({
-  eyebrow,
+function Section({
+  number,
   title,
   description,
+  children,
 }: {
-  eyebrow: string;
+  number: string;
   title: string;
   description: string;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3 border-b border-slate-200 pb-5 dark:border-[#3D3834] md:flex-row md:items-end md:justify-between">
-      <div>
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 dark:text-slate-500">
-          {eyebrow}
+    <section className="space-y-3">
+      <div className="px-1">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-400 dark:text-gray-500">
+          {number}
         </p>
-        <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.02em] text-slate-900 dark:text-white">
+        <h2 className="mt-1 text-[15px] font-semibold text-slate-900 dark:text-white">
           {title}
         </h2>
+        <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+          {description}
+        </p>
       </div>
-      <p className="max-w-xl text-sm leading-6 text-slate-500 dark:text-slate-400 md:text-right">
-        {description}
-      </p>
-    </div>
+      <div className="space-y-4">{children}</div>
+    </section>
   );
 }
 
 export default function SettingsPage() {
-  const [currentPlan, setCurrentPlan] = useState<string | undefined>(
-    undefined
-  );
+  const [currentPlan, setCurrentPlan] = useState<string | undefined>();
 
   useEffect(() => {
     let mounted = true;
-
     async function loadSubscription() {
       try {
         const response = await authFetch("/subscription");
-
-        if (!response.ok) {
-          return;
-        }
-
+        if (!response.ok) return;
         const data: SubscriptionData = await response.json();
-
-        if (mounted) {
-          setCurrentPlan(data.plan);
-        }
+        if (mounted) setCurrentPlan(data.plan);
       } catch (error) {
         console.error("Settings subscription error:", error);
       }
     }
-
     loadSubscription();
-
     return () => {
       mounted = false;
     };
   }, []);
 
   return (
-    <main className="mx-auto w-full max-w-[1240px] pb-20">
-      <header className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white px-6 py-7 shadow-[0_18px_50px_-32px_rgba(15,23,42,0.35)] dark:border-[#3D3834] dark:bg-[#24211F] dark:shadow-none md:px-8 md:py-8">
-        <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-slate-100/80 blur-3xl dark:bg-[#3D3834]/40" />
-        <div className="relative flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500 dark:border-[#48423E] dark:bg-[#2B2825] dark:text-slate-400">
-              Account settings
-            </div>
-
-            <h1 className="mt-4 text-3xl font-semibold tracking-[-0.035em] text-slate-950 dark:text-white md:text-4xl">
+    <main className="mx-auto w-full max-w-[920px] pb-24">
+      <header className="mb-10 border-b border-gray-200 pb-7 dark:border-[#3D3834]">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
+          Account
+        </p>
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-[-0.03em] text-slate-950 dark:text-white">
               Settings
             </h1>
-
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400 md:text-[15px]">
-              Configure your account, preferences, notifications, subscription,
-              and security controls from one place.
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+              Manage your account, preferences, subscription and security.
             </p>
           </div>
-
-          <div className="shrink-0 rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3 dark:border-[#48423E] dark:bg-[#2B2825]">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
-              Workspace
-            </p>
-            <p className="mt-1 text-sm font-medium text-slate-700 dark:text-slate-200">
-              Personal account
-            </p>
-          </div>
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            Life AiOS
+          </p>
         </div>
       </header>
 
-      <div className="mt-10 space-y-14">
-        <section>
-          <SectionHeader
-            eyebrow="01 · Profile"
-            title="Account & preferences"
-            description="Manage your personal details and the way Life AiOS looks and behaves."
-          />
+      <div className="space-y-12">
+        <Section
+          number="01"
+          title="Profile"
+          description="Your personal account information and password."
+        >
+          <AccountCard />
+        </Section>
 
-          <div className="mt-6 grid gap-6 xl:grid-cols-2">
-            <AccountCard />
-            <AppearanceCard />
-            <LanguageCard />
-            <NotificationCard />
-          </div>
-        </section>
+        <Section
+          number="02"
+          title="Preferences"
+          description="Customize the appearance, language and notifications of Life AiOS."
+        >
+          <AppearanceCard />
+          <LanguageCard />
+          <NotificationCard />
+        </Section>
 
-        <section>
-          <SectionHeader
-            eyebrow="02 · Billing"
-            title="Subscription & plans"
-            description="Review your current plan, document allowance, and available subscription options."
-          />
+        <Section
+          number="03"
+          title="Subscription & Billing"
+          description="Review your current plan, document usage and subscription."
+        >
+          <SubscriptionCard />
+          <PricingPlans currentPlan={currentPlan} />
+        </Section>
 
-          <div className="mt-6 space-y-6">
-            <SubscriptionCard />
-            <PricingPlans currentPlan={currentPlan} />
-          </div>
-        </section>
+        <Section
+          number="04"
+          title="Support"
+          description="Get help with your account or contact the Life AiOS team."
+        >
+          <ContactCard />
+        </Section>
 
-        <section>
-          <SectionHeader
-            eyebrow="03 · Support"
-            title="Help & assistance"
-            description="Get in touch with support or find the right place for account-related help."
-          />
-
-          <div className="mt-6">
-            <ContactCard />
-          </div>
-        </section>
-
-        <section>
-          <SectionHeader
-            eyebrow="04 · Security"
-            title="Security & data"
-            description="Manage account protection and the actions that affect your stored data."
-          />
-
-          <div className="mt-6">
-            <DangerZoneCard />
-          </div>
-        </section>
+        <Section
+          number="05"
+          title="Security & Data"
+          description="Manage sensitive account actions and your stored data."
+        >
+          <DangerZoneCard />
+        </Section>
       </div>
     </main>
   );
