@@ -211,47 +211,26 @@ export default function DangerZoneCard() {
   return (
 
     <div
-      className="
-        rounded-2xl
-        border
-        border-red-500/20
-        bg-white
-        p-8
-        shadow-sm
-        dark:border-red-500/20
-        dark:bg-[#2B2724]
-      "
+      className="overflow-hidden rounded-3xl border border-red-500/20 bg-white shadow-[0_18px_60px_rgba(15,23,42,0.08)] dark:border-red-500/20 dark:bg-[#2B2724]"
     >
 
       {/* =====================================================
           HEADER
       ===================================================== */}
 
-      <h2
-        className="
-          mb-2
-          text-2xl
-          font-bold
-          text-red-600
-        "
-      >
-        🗑 {t.dangerZone}
-      </h2>
+      <div className="border-b border-red-500/15 px-7 py-6 dark:border-red-500/20">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-400/80">
+          Life AiOS
+        </p>
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-red-600 dark:text-red-400">
+          {t.dangerZone}
+        </h2>
+        <p className="mt-1 max-w-xl text-sm text-gray-500 dark:text-gray-400">
+          {t.deleteAccountDescription}
+        </p>
+      </div>
 
-
-      <p
-        className="
-          mb-8
-          text-gray-500
-          dark:text-gray-400
-        "
-      >
-        {t.deleteAccountDescription}
-
-        <br />
-
-        {t.deleteAccountWarning}
-      </p>
+      <div className="p-7">
 
 
       {/* =====================================================
