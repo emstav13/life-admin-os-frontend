@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
 import AccountCard from "./AccountCard";
@@ -17,9 +15,29 @@ type SubscriptionData = {
   plan: "free" | "pro" | "pro_plus" | string;
 };
 
+function GroupLabel({
+  eyebrow,
+  title,
+}: {
+  eyebrow: string;
+  title: string;
+}) {
+  return (
+    <div className="border-b border-slate-200 pb-3 dark:border-[#3D3834]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400 dark:text-slate-500">
+        {eyebrow}
+      </p>
+      <h2 className="mt-1 text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-200">
+        {title}
+      </h2>
+    </div>
+  );
+}
+
 export default function SettingsPage() {
-  const [currentPlan, setCurrentPlan] =
-    useState<string | undefined>(undefined);
+  const [currentPlan, setCurrentPlan] = useState<
+    string | undefined
+  >(undefined);
 
   useEffect(() => {
     let mounted = true;
@@ -54,88 +72,64 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="w-full">
-      <div className="mb-10">
-        <div>
-          <h1
-            className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl"
-          >
-            Settings
-          </h1>
-        </div>
-
-        <p className="mt-2 max-w-2xl text-base leading-7 text-slate-500 dark:text-gray-400">
-          Manage your account, preferences, notifications and Life AiOS experience.
+    <div className="mx-auto w-full max-w-[1180px]">
+      <header className="mb-12">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+          Account
         </p>
-      </div>
 
-      <div className="space-y-8">
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Account
-            </p>
+        <h1 className="mt-2 text-3xl font-bold tracking-[-0.02em] text-slate-950 dark:text-white md:text-4xl">
+          Settings
+        </h1>
+
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+          Manage your account, preferences, notifications,
+          subscription, and security settings.
+        </p>
+      </header>
+
+      <div className="space-y-12">
+        <section className="space-y-6">
+          <GroupLabel
+            eyebrow="Profile"
+            title="Account and personal preferences"
+          />
+
+          <div className="space-y-6">
+            <AccountCard />
+            <AppearanceCard />
+            <LanguageCard />
+            <NotificationCard />
           </div>
-          <AccountCard />
         </section>
 
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Appearance
-            </p>
+        <section className="space-y-6">
+          <GroupLabel
+            eyebrow="Billing"
+            title="Subscription and plans"
+          />
+
+          <div className="space-y-6">
+            <SubscriptionCard />
+            <PricingPlans currentPlan={currentPlan} />
           </div>
-          <AppearanceCard />
         </section>
 
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Preferences
-            </p>
-          </div>
-          <LanguageCard />
-        </section>
+        <section className="space-y-6">
+          <GroupLabel
+            eyebrow="Support"
+            title="Help and account assistance"
+          />
 
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Notifications
-            </p>
-          </div>
-          <NotificationCard />
-        </section>
-
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Plan
-            </p>
-          </div>
-          <SubscriptionCard />
-        </section>
-
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Pricing
-            </p>
-          </div>
-
-          <PricingPlans currentPlan={currentPlan} />
-        </section>
-
-        <section>
-          <div className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-gray-500">
-              Support
-            </p>
-          </div>
           <ContactCard />
         </section>
 
-        <section>
-          <div className="mb-4" />
+        <section className="space-y-6">
+          <GroupLabel
+            eyebrow="Security"
+            title="Account protection and data controls"
+          />
+
           <DangerZoneCard />
         </section>
       </div>
