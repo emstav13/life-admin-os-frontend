@@ -85,8 +85,11 @@ export default function SettingsPage() {
           title="Preferences"
           description="Customize the appearance, language and notifications of Life AiOS."
         >
-          <AppearanceCard />
-          <LanguageCard />
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-[#3D3834] dark:bg-[#2B2724]">
+            <AppearanceCard embedded />
+            <div className="my-7 border-t border-gray-200 dark:border-[#3D3834]" />
+            <LanguageCard embedded />
+          </div>
           <NotificationCard />
         </Section>
 
