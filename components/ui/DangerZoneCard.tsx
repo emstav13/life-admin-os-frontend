@@ -214,11 +214,11 @@ export default function DangerZoneCard() {
       className="
         rounded-2xl
         border
-        border-red-200
+        border-red-500/20
         bg-white
         p-8
-        shadow-lg
-        dark:border-red-900/40
+        shadow-sm
+        dark:border-red-500/20
         dark:bg-[#2B2724]
       "
     >
@@ -263,10 +263,10 @@ export default function DangerZoneCard() {
           rounded-xl
           border
           border-red-200
-          bg-red-50
+          bg-red-500/[0.035]
           p-5
-          dark:border-red-900/40
-          dark:bg-red-950/20
+          dark:border-red-500/20
+          dark:bg-red-950/10
         "
       >
 
@@ -323,6 +323,9 @@ export default function DangerZoneCard() {
               text-white
               transition
               hover:bg-red-700
+              hover:-translate-y-0.5
+              hover:shadow-lg
+              hover:shadow-red-500/10
               disabled:cursor-not-allowed
               disabled:opacity-50
             "
