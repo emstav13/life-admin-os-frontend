@@ -119,6 +119,38 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
   const effectiveCurrentPlan =
     loadedCurrentPlan ?? currentPlan;
 
+  async function upgradeToProPlus() {
+    try {
+      setLoadingPlan("pro_plus");
+      setError("");
+
+      const response = await authFetch("/subscription/upgrade", {
+        method: "POST",
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          typeof data?.detail === "string"
+            ? data.detail
+            : "Unable to upgrade your subscription."
+        );
+      }
+
+      window.location.reload();
+    } catch (upgradeError) {
+      console.error("Upgrade error:", upgradeError);
+      setError(
+        upgradeError instanceof Error
+          ? upgradeError.message
+          : "Unable to upgrade your subscription."
+      );
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
+
   async function startCheckout(plan: Plan["id"]) {
     if (plan === "free" || plan === effectiveCurrentPlan) {
       return;
@@ -274,7 +306,11 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => startCheckout(plan.id)}
+                    onClick={() =>
+                      effectiveCurrentPlan === "pro" && plan.id === "pro_plus"
+                        ? upgradeToProPlus()
+                        : startCheckout(plan.id)
+                    }
                     disabled={loadingPlan !== null}
                     className={`flex h-11 w-full items-center justify-center rounded-xl text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
                       isProPlus
@@ -285,11 +321,15 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Redirecting...
+                        {effectiveCurrentPlan === "pro" && plan.id === "pro_plus"
+                          ? "Upgrading..."
+                          : "Redirecting..."}
                       </>
                     ) : (
                       <>
-                        Upgrade to {plan.name}
+                        {effectiveCurrentPlan === "pro" && plan.id === "pro_plus"
+                          ? "Upgrade to Pro Plus"
+                          : `Upgrade to ${plan.name}`}
                         <span className="ml-2">→</span>
                       </>
                     )}
