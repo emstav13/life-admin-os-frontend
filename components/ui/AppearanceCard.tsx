@@ -1,5 +1,6 @@
 "use client";
 
+import { Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 
@@ -7,97 +8,48 @@ export default function AppearanceCard() {
   const { theme, setTheme } = useTheme();
   const { t } = useLanguage();
 
+  const optionClass = (selected: boolean) =>
+    `group relative rounded-xl border p-4 text-left transition-all duration-200 ${selected
+      ? "border-blue-500/80 bg-blue-500/[0.06] shadow-[0_0_0_1px_rgba(59,130,246,0.12)]"
+      : "border-gray-200 bg-gray-50/60 hover:border-gray-300 hover:bg-gray-50 dark:border-[#403B37] dark:bg-[#302C29]/70 dark:hover:border-[#514B47] dark:hover:bg-[#34302D]"}`;
+
   return (
-    <div
-      className="
-        bg-white
-        dark:bg-[#2B2724]
-
-        border
-        border-gray-200
-        dark:border-[#3D3834]
-
-        rounded-2xl
-        shadow-lg
-
-        p-6
-
-        transition-colors
-      "
-    >
-
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-colors dark:border-[#3D3834] dark:bg-[#2B2724]">
       <div className="mb-5">
-
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          🎨 {t.appearanceTitle}
-        </h2>
-
-        <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-          {t.chooseTheme}
-        </p>
-
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10 text-blue-500">
+            <Palette className="h-4 w-4" />
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+            {t.appearanceTitle}
+          </h2>
+        </div>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t.chooseTheme}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-
-        {/* Light */}
-
-        <button
-          type="button"
-          onClick={() => setTheme("light")}
-          className={`rounded-xl border-2 p-4 transition-all text-left ${
-            theme === "light"
-              ? "border-blue-600 bg-blue-50"
-              : "border-gray-200 dark:border-[#3D3834] bg-white dark:bg-[#34302D] hover:border-blue-400"
-          }`}
-        >
-
-          <div className="text-2xl">
-            ☀️
-          </div>
-
-          <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">
-            {t.light}
-          </h3>
-
-          {theme === "light" && (
-            <div className="mt-2 inline-flex rounded-full bg-blue-600 text-white px-2 py-0.5 text-[10px] font-medium">
-              ✓ {t.selected}
+        <button type="button" onClick={() => setTheme("light")} className={optionClass(theme === "light")}>
+          <div className="flex items-start justify-between">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/10 text-amber-500">
+              <Sun className="h-5 w-5" />
             </div>
-          )}
-
+            {theme === "light" && <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-white"><span className="text-[11px]">✓</span></span>}
+          </div>
+          <h3 className="mt-3 font-semibold text-slate-900 dark:text-white">{t.light}</h3>
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Light interface</p>
         </button>
 
-        {/* Dark */}
-
-        <button
-          type="button"
-          onClick={() => setTheme("dark")}
-          className={`rounded-xl border-2 p-4 transition-all text-left ${
-            theme === "dark"
-              ? "border-blue-600 bg-[#34302D]"
-              : "border-gray-200 dark:border-[#3D3834] bg-white dark:bg-[#34302D] hover:border-blue-400"
-          }`}
-        >
-
-          <div className="text-2xl">
-            🌙
-          </div>
-
-          <h3 className="mt-2 font-semibold text-slate-900 dark:text-white">
-            {t.dark}
-          </h3>
-
-          {theme === "dark" && (
-            <div className="mt-2 inline-flex rounded-full bg-blue-600 text-white px-2 py-0.5 text-[10px] font-medium">
-              ✓ {t.selected}
+        <button type="button" onClick={() => setTheme("dark")} className={optionClass(theme === "dark")}>
+          <div className="flex items-start justify-between">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/10 text-indigo-400">
+              <Moon className="h-5 w-5" />
             </div>
-          )}
-
+            {theme === "dark" && <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-white"><span className="text-[11px]">✓</span></span>}
+          </div>
+          <h3 className="mt-3 font-semibold text-slate-900 dark:text-white">{t.dark}</h3>
+          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">Dark interface</p>
         </button>
-
       </div>
-
     </div>
   );
 }
