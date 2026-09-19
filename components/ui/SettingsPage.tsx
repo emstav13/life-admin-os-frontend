@@ -64,7 +64,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <main className="mx-auto w-full max-w-none pb-24">
+    <main className="settings-page mx-auto w-full max-w-none pb-24">
       <header className="mb-10 border-b border-gray-200 pb-7 dark:border-[#3D3834]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
           Account
@@ -90,7 +90,7 @@ export default function SettingsPage() {
           title="Profile"
           description="Your personal account information and password."
         >
-          <AccountCard />
+          <div className="settings-card"><AccountCard /></div>
         </Section>
 
         <Section
@@ -98,9 +98,9 @@ export default function SettingsPage() {
           title="Preferences"
           description="Customize the appearance, language and notifications of Life AiOS."
         >
-          <AppearanceCard />
-          <LanguageCard />
-          <NotificationCard />
+          <div className="settings-card"><AppearanceCard /></div>
+          <div className="settings-card"><LanguageCard /></div>
+          <div className="settings-card"><NotificationCard /></div>
         </Section>
 
         <Section
@@ -108,8 +108,8 @@ export default function SettingsPage() {
           title="Subscription & Billing"
           description="Review your current plan, document usage and subscription."
         >
-          <SubscriptionCard />
-          <PricingPlans currentPlan={currentPlan} />
+          <div className="settings-card"><SubscriptionCard /></div>
+          <div className="settings-card"><PricingPlans currentPlan={currentPlan} /></div>
         </Section>
 
         <Section
@@ -117,7 +117,7 @@ export default function SettingsPage() {
           title="Support"
           description="Get help with your account or contact the Life AiOS team."
         >
-          <ContactCard />
+          <div className="settings-card"><ContactCard /></div>
         </Section>
 
         <Section
@@ -125,9 +125,8 @@ export default function SettingsPage() {
           title="Security & Data"
           description="Manage sensitive account actions and your stored data."
         >
-          <DangerZoneCard />
+          <div className="settings-card"><DangerZoneCard /></div>
         </Section>
       </div>
-    </main>
-  );
+    <style jsx global>{`\n      .settings-page .settings-card > div {\n        width: 100% !important;\n        border-radius: 16px !important;\n        border-color: #3D3834 !important;\n        box-shadow: none !important;\n      }\n      .settings-page .settings-card > div:hover {\n        box-shadow: none !important;\n      }\n    `}</style>\n    </main>\n  );
 }
