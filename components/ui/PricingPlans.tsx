@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Loader2, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { authFetch } from "@/lib/api-auth";
 import { useLanguage } from "@/components/providers/LanguageProvider";
@@ -64,11 +64,63 @@ const plans: Plan[] = [
 
 export default function PricingPlans({ currentPlan }: PricingPlansProps) {
   const { t } = useLanguage();
+
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [error, setError] = useState("");
 
+  const [loadedCurrentPlan, setLoadedCurrentPlan] = useState<
+    string | undefined
+  >(currentPlan);
+
+  useEffect(() => {
+    if (currentPlan) {
+      setLoadedCurrentPlan(currentPlan);
+    }
+  }, [currentPlan]);
+
+  useEffect(() => {
+    if (currentPlan) {
+      return;
+    }
+
+    let mounted = true;
+
+    async function loadCurrentPlan() {
+      try {
+        const response = await authFetch("/subscription");
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+
+        if (
+          mounted &&
+          typeof data?.plan === "string"
+        ) {
+          setLoadedCurrentPlan(data.plan);
+        }
+      } catch (error) {
+        console.error(
+          "Pricing subscription error:",
+          error
+        );
+      }
+    }
+
+    loadCurrentPlan();
+
+    return () => {
+      mounted = false;
+    };
+  }, [currentPlan]);
+
+  const effectiveCurrentPlan =
+    loadedCurrentPlan ?? currentPlan;
+
   async function startCheckout(plan: Plan["id"]) {
-    if (plan === "free") {
+    if (plan === "free" || plan === effectiveCurrentPlan) {
       return;
     }
 
@@ -147,7 +199,9 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
 
       <div className="grid gap-5 p-7 lg:grid-cols-3">
         {plans.map((plan) => {
-          const isCurrent = currentPlan === plan.id;
+          const isCurrent =
+            effectiveCurrentPlan === plan.id;
+
           const isPro = plan.id === "pro";
           const isProPlus = plan.id === "pro_plus";
           const isLoading = loadingPlan === plan.id;
@@ -193,7 +247,10 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
 
               <div className="mt-6 space-y-3">
                 {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-start gap-2.5">
+                  <div
+                    key={feature}
+                    className="flex items-start gap-2.5"
+                  >
                     <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/80 dark:bg-white/5">
                       <Check className="h-3.5 w-3.5" />
                     </span>
