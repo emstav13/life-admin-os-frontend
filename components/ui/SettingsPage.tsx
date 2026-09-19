@@ -64,7 +64,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <main className="mx-auto w-full max-w-[920px] pb-24">
+    <main className="mx-auto w-full max-w-none pb-24">
       <header className="mb-10 border-b border-gray-200 pb-7 dark:border-[#3D3834]">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
           Account
