@@ -262,7 +262,7 @@ export default function PricingPlans({ currentPlan }: PricingPlansProps) {
                 ))}
               </div>
 
-              <div className="mt-7 pt-1">
+              <div className="mt-auto pt-7">
                 {isCurrent ? (
                   <div className="flex h-11 items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 text-sm font-semibold text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-500/10 dark:text-emerald-300">
                     Current plan
