@@ -127,5 +127,7 @@ export default function SettingsPage() {
         >
           <DangerZoneCard />
         </Section>
-      </div>\n    </main>\n  );
+      </div>
+    </main>
+  );
 }
