@@ -16,11 +16,12 @@ export default function ContactCard() {
         dark:border-[#3D3834]
 
         rounded-2xl
-        shadow-lg
+        shadow-sm
 
         p-8
 
-        transition-colors
+        transition-all
+        hover:border-[#4A4540]
       "
     >
       <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
@@ -29,7 +30,7 @@ export default function ContactCard() {
 
       <p className="text-gray-500 dark:text-gray-400 mb-8">{t.needHelp}</p>
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 rounded-xl border border-gray-200 dark:border-[#3D3834] p-6">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 rounded-xl border border-gray-200 bg-gray-50/70 p-6 dark:border-[#403B37] dark:bg-[#24211F]">
         <div>
           <h3 className="font-semibold text-lg text-slate-900 dark:text-white">
             {t.sendEmail}
@@ -55,7 +56,9 @@ export default function ContactCard() {
             text-white
             font-semibold
 
-            hover:opacity-90
+            hover:-translate-y-0.5
+            hover:shadow-lg
+            hover:shadow-blue-500/15
 
             transition
 
