@@ -318,6 +318,7 @@ export default function DangerZoneCard() {
 
       </div>
 
+      </div>
     </div>
   );
 }
